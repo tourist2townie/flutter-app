@@ -1,0 +1,48 @@
+name: tt
+description: A new Flutter project.
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  sqflite: any
+  path_provider: any
+  intl: ^0.15.7
+  flutter_gallery_assets: ^0.1.6
+  image_picker: ^0.4.12
+  sqljocky5: ^2.2.1
+  shared_preferences: ^0.4.3
+  fluttertoast: ^2.1.0
+#  http: ^0.12
+
+
+
+  cupertino_icons: ^0.1.2
+  http: any
+
+dev_dependencies:
+  json_serializable: ^2.0.0
+  build_runner: ^1.1.2
+  flutter_test:
+    sdk: flutter
+
+
+
+flutter:
+
+  uses-material-design: true
+  assets:
+        - assets/images/
+#        -images/Hospitality-Travel.png
+#        -images/1.png
+#        -images/2.png
+#        -images/3.png
+#        -images/4.png
+#        -images/5.png
+
+
