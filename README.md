@@ -2,6 +2,8 @@
 
 Tourist 2 Townie is a mobile application devoloped using flutter mobile application devolopment framework for our university 2nd year group project
 
+[![Build Status](https://travis-ci.org/tourist2townie/flutter-app.svg?branch=master)](https://travis-ci.org/tourist2townie/flutter-app)
+
 # Tourist activities
 
 ### Prerequisites
