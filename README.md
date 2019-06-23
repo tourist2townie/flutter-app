@@ -4,5 +4,34 @@ Tourist 2 Townie is a mobile application devoloped using flutter mobile applicat
 
 # Tourist activities
 
-<img src="lib/Screenshots/56281072-52125f80-6129-11e9-82e9-8260624f0a4f.jpg" height="500" width="300"> <img src="lib/Screenshots/56850597-843e7100-6922-11e9-9e64-9f3468c67de2 (1).jpg" height="500" width="300"> <img src="lib/Screenshots/56854029-91248a00-694d-11e9-8eab-e0d2acc4be39.jpg" height="500" width="300"> <img src="lib/Screenshots/56854213-815a7500-6950-11e9-9227-e2f9aeb17d5b.jpg" height="500" width="300"> <img src="lib/Screenshots/Screenshot_20190508-002722.jpg" height="500" width="300"> <img src="lib/Screenshots/Screenshot_20190508-002730.jpg" height="500" width="300"> <img src="lib/Screenshots/Screenshot_20190508-002738.jpg" height="500" width="300"> <img src="lib/Screenshots/Screenshot_20190508-002747.jpg" height="500" width="300"> <img src="lib/Screenshots/Screenshot_20190508-002753.jpg" height="500" width="300"> <img src="lib/Screenshots/Screenshot_20190508-002759.jpg" height="500" width="300"> <img src="lib/Screenshots/Screenshot_20190508-002806.jpg" height="500" width="300"> 
+### Prerequisites
 
+You shold have a IDE (ex: android studio,vs code) with flutter installed in it.
+
+## User Guide
+
+# How to setup
+
+Clone the repository.
+```
+git clone https://github.com/tourist2townie/flutter-app.git
+```
+
+Open the repository from the IDE ypu are using.(ex: android studio).
+Run the command :
+```
+$ Get Packages
+```
+# How to use
+In a new terminal navigate to 
+````
+flutter-app
+````
+directory and build flutter the application. Run the command
+````
+flutter build apk
+````
+or run the flutter application 
+````
+flutter run
+````
