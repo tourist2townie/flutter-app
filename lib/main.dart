@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tt/utils/uidata.dart';
 import 'dart:async';
 
-import 'Screens/Tourist/Tourist/ContactAdmin.dart';
 import 'Screens/Tourist/Tourist/GuideProfile.dart';
 import 'Screens/Tourist/Tourist/Login.dart';
 import 'Screens/Tourist/Tourist/Notifications.dart';
+import 'Screens/Tourist/Tourist/Timeline.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -22,7 +22,7 @@ void main() {
     routes: <String, WidgetBuilder>{
       UIData.GuideProfile: (BuildContext context) => GuideProfile(),
       UIData.Notifications: (BuildContext context) => Notifications(),
-      UIData.ContactAdmin: (BuildContext context) => ContactAdmin(),
+      UIData.Timeline: (BuildContext context) => Timeline(),
           },
   ));
 }

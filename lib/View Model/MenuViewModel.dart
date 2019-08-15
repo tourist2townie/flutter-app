@@ -27,11 +27,11 @@ class MenuViewModel {
           items:UIData.JoinTrip,
       ),
       Menu(
-        title: "Contact Admin",
+        title: "Timeline",
         menuColor: Color(0xffc7d8f4),
-        icon: Icons.contact_phone,
+        icon: Icons.timeline,
         image: UIData.contactAdmin,
-          items:UIData.ContactAdmin
+          items:UIData.Timeline
       ),
       Menu(
         title: "Payments",

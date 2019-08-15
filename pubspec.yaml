@@ -18,6 +18,7 @@ dependencies:
   sqljocky5: ^2.2.1
   shared_preferences: ^0.4.3
   fluttertoast: ^2.1.0
+  page_view_indicator: ^0.3.0+1
 #  http: ^0.12
 
 

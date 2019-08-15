@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tt/Screens/Admin/AdminMain.dart';
 import 'package:tt/Screens/Guide/GuideFirst.dart';
+import 'package:tt/Screens/Tourist/Tourist/Timeline.dart';
 import 'package:tt/Screens/Tourist/Tourist/TouristProfile.dart';
 import 'package:tt/utils/uidata.dart';
 
-import 'ContactAdmin.dart';
 import 'First.dart';
 import 'JoinTrip.dart';
 import 'Notifications.dart';
@@ -20,12 +20,12 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-       routes: <String, WidgetBuilder>{
-      UIData.TouristProfile: (BuildContext context) => TouristProfile(),
-      UIData.JoinTrip: (BuildContext context) => JoinTrip(),
-      UIData.Notifications: (BuildContext context) => Notifications(),
-      UIData.ContactAdmin: (BuildContext context) => ContactAdmin(),
-          },
+      routes: <String, WidgetBuilder>{
+        UIData.TouristProfile: (BuildContext context) => TouristProfile(),
+        UIData.JoinTrip: (BuildContext context) => JoinTrip(),
+        UIData.Notifications: (BuildContext context) => Notifications(),
+        UIData.Timeline: (BuildContext context) => Timeline(),
+      },
       title: 'Tourist 2 Townie',
       home: LoginPage(),
     );
@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
       var value = json.decode(response.body.toString());
       print(value["user"]["usertype"]);
       var type = (value["user"]["userType"]).toString();
-      
+
       if (type == "guide") {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomePageGuide()));
@@ -82,13 +82,12 @@ class _LoginPageState extends State<LoginPage> {
         child: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("assets/images/login.jpg"),
+                  image: AssetImage("assets/images/login_new.jpg"),
                   fit: BoxFit.cover)),
           child: Column(
             children: <Widget>[
-              
               Container(
-                padding: EdgeInsets.only(top: 77.0),
+                padding: EdgeInsets.only(top: 70.0),
                 width: 170.0,
                 height: 170.0,
                 decoration: BoxDecoration(shape: BoxShape.circle),
@@ -165,7 +164,11 @@ class _LoginPageState extends State<LoginPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0)),
                 onPressed: () {
-                  loginFunc(context);
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => HomePage()));
+                  // loginFunc(context);
                   print("login");
                 },
               ),
