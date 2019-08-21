@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tt/Bloc/MenuBlocGuide.dart';
+import 'package:tt/models/ModelGuide.dart';
 import 'package:tt/models/model.dart';
 import 'package:tt/utils/uidata.dart';
 
-import 'ConfirmRequests.dart';
 
 class HomePageGuide extends StatelessWidget {
   final _scaffoldState = GlobalKey<ScaffoldState>();
@@ -12,12 +12,9 @@ class HomePageGuide extends StatelessWidget {
   BuildContext _context;
 
   //menuStack
-  Widget menuStack(BuildContext context, Menu menu) => InkWell(
+  Widget menuStack(BuildContext context, MenuGuide menu) => InkWell(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ConfirmRequests()),
-          );
+         _navigate(context, menu);
         },
         splashColor: Colors.orange,
         child: Card(
@@ -35,7 +32,7 @@ class HomePageGuide extends StatelessWidget {
       );
 
   //stack 1/3
-  Widget menuImage(Menu menu) => Image.asset(
+  Widget menuImage(MenuGuide menu) => Image.asset(
         menu.image,
         fit: BoxFit.cover,
       );
@@ -44,33 +41,33 @@ class HomePageGuide extends StatelessWidget {
   Widget menuColor() => new Container(
         decoration: BoxDecoration(boxShadow: <BoxShadow>[
           BoxShadow(
-            color: Colors.black.withOpacity(0.8),
+            color: Colors.black.withOpacity(0.3),
             blurRadius: 5.0,
           ),
         ]),
       );
 
   //stack 3/3
-  Widget menuData(Menu menu) => Column(
+  Widget menuData(MenuGuide menu) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(
             menu.icon,
-            color: Colors.white,
+            color: Colors.teal,
           ),
           SizedBox(
             height: 10.0,
           ),
           Text(
             menu.title,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
           )
         ],
       );
 
   //appbar
-  Widget appBar() => SliverAppBar(
-        backgroundColor: Colors.black,
+   Widget appBar() => SliverAppBar(
+        backgroundColor: Colors.teal.withOpacity(0.6),
         pinned: true,
         elevation: 10.0,
         forceElevated: true,
@@ -78,7 +75,15 @@ class HomePageGuide extends StatelessWidget {
         flexibleSpace: FlexibleSpaceBar(
           centerTitle: false,
           background: Container(
-            decoration: BoxDecoration(),
+            child: Padding(
+              padding: EdgeInsets.only(top: 10.0 ),
+            ),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/appBarImage.jpg"),
+                fit: BoxFit.cover
+              )
+            ),
           ),
           title: Row(
             children: <Widget>[
@@ -96,7 +101,7 @@ class HomePageGuide extends StatelessWidget {
       );
 
   //bodygrid
-  Widget bodyGrid(List<Menu> menu) => SliverGrid(
+  Widget bodyGrid(List<MenuGuide> menu) => SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount:
               MediaQuery.of(_context).orientation == Orientation.portrait
@@ -120,7 +125,7 @@ class HomePageGuide extends StatelessWidget {
 
   Widget bodySliverList() {
     MenuBloc menuBloc = MenuBloc();
-    return StreamBuilder<List<Menu>>(
+    return StreamBuilder<List<MenuGuide>>(
         stream: menuBloc.menuItemsGuide,
         builder: (context, snapshot) {
           return snapshot.hasData
@@ -139,5 +144,11 @@ class HomePageGuide extends StatelessWidget {
     _context = context;
     deviceSize = MediaQuery.of(context).size;
     return homeScaffold(context);
+  }
+
+   void _navigate(BuildContext context, MenuGuide menu) {
+    // Navigator.pop(context);
+    Navigator.pushNamed(context, "${menu.items}");
+    print("${menu.items}");
   }
 }

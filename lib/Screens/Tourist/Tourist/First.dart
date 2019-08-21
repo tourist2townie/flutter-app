@@ -77,7 +77,15 @@ class HomePage extends StatelessWidget {
         flexibleSpace: FlexibleSpaceBar(
           centerTitle: false,
           background: Container(
-            decoration: BoxDecoration(),
+            child: Padding(
+              padding: EdgeInsets.only(top: 10.0 ),
+            ),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/appBarImage.jpg"),
+                fit: BoxFit.cover
+              )
+            ),
           ),
           title: Row(
             children: <Widget>[

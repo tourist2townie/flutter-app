@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:tt/Screens/Guide/GuideFirst.dart';
+// import 'package:tt/Screens/Guide/GuideFirst.dart';
 
 class UIData {
 
@@ -12,9 +12,14 @@ class UIData {
   static const String Notifications = "Notifications";
   static const String Timeline = "Timeline";
   static const String JoinTrip = "JoinTrip";
-  static const String Settings = "Settings";
+  static const String ChatRoom = "ChatRoom";
   static const String Payment = "Payments";
-  static const String Photos = "Photos";
+  static const String TouristPhotos = "TouristPhotos";
+  static const String GuidePhotos = "GuidePhotos";
+  static const String ConfirmRequest = "ConfirmRequest";
+  static const String AdminContact = "AdminContact";
+  static const String GuideTimeline = "GuideTimeline";
+  static const String GuidePaymentHistory = "GuidePaymentHistory";
 
   
 
@@ -44,7 +49,7 @@ class UIData {
 
   
 
-  static const MaterialColor ui_kit_color = Colors.grey;
+  
 
 //colors
   static List<Color> kitGradients = [
@@ -68,14 +73,3 @@ class UIData {
   }
 }
 
-class Route extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: <String, WidgetBuilder>{
-        'GuideProfile': (BuildContext context) => HomePageGuide(),
-      },
-    );
-  }
-
-}

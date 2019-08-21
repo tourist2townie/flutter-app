@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class TouristPhotos extends StatefulWidget{
+class Photos extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
     
-    return TouristPhotosState();
+    return PhotosState();
       }
     
     }
     
-    class TouristPhotosState extends State<TouristPhotos>{
+    class PhotosState extends State<Photos>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(

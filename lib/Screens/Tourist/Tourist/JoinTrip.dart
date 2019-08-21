@@ -1,104 +1,89 @@
 import 'package:flutter/material.dart';
-import 'package:page_view_indicator/page_view_indicator.dart';
+import 'package:tt/Screens/Tourist/Tourist/AdventureGuideList.dart';
+import 'package:tt/Screens/Tourist/Tourist/Hike.dart';
+import 'package:tt/Screens/Tourist/Tourist/HistoricalPlacesGuideList.dart';
 
 class JoinTrip extends StatelessWidget {
-  static const length = 4;
-  final pageIndexNotifier = ValueNotifier<int>(0);
-  List<Widget> TypesOfTripList = new List();
-
-  JoinTrip();
-
   @override
   Widget build(BuildContext context) {
-    TypesOfTripList.add(Adventure());
-    TypesOfTripList.add(SightSeeing());
-    TypesOfTripList.add(FuckA());
-    TypesOfTripList.add(FuckB());
-
-    return Scaffold(
-      body: Container(
-        color: Color(0xFFDCDCDC),
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 400.0,
-              child: Stack(
-                fit: StackFit.loose,
-                alignment: FractionalOffset.bottomCenter,
-                children: <Widget>[
-                  PageView.builder(
-                    onPageChanged: (index) => pageIndexNotifier.value = index,
-                    itemCount: length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Container(),
-                      );
-                    },
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 4,
+        child: Scaffold(
+          appBar: AppBar(
+            
+            backgroundColor: Colors.white,
+            bottom: TabBar(
+              unselectedLabelColor: Colors.red,
+              indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50.0),
+                  color: Colors.red),
+              tabs: <Widget>[
+                Tab(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50.0),
+                        border: Border.all(
+                          color: Colors.red,
+                          width: 1,
+                        )),
+                    child: Align(
+                      child: Text("Hike"),
+                    ),
                   ),
-                  _buildExample1()
-                ],
-              ),
+                ),
+                Tab(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50.0),
+                        border: Border.all(
+                          color: Colors.red,
+                          width: 1,
+                        )),
+                    child: Align(
+                      child: Text("Adventure"),
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50.0),
+                        border: Border.all(
+                          color: Colors.red,
+                          width: 1,
+                        )),
+                    child: Align(
+                      child: Text("Historical"),
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50.0),
+                        border: Border.all(
+                          color: Colors.red,
+                          width: 1,
+                        )),
+                    child: Align(
+                      child: Text("Beaches"),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
+          body: TabBarView(
+            children: <Widget>[
+              Hike(),
+              Adventure(),
+              HistoricalPlaces(),
+              Icon(Icons.account_balance),
+            ],
+          ),
         ),
       ),
     );
   }
-  PageViewIndicator  _buildExample1() {
-    return PageViewIndicator(
-      pageIndexNotifier: pageIndexNotifier,
-      length: length,
-      normalBuilder: (animationController) => Circle(
-            size: 8.0,
-            color: Colors.black87,
-          ),
-      highlightedBuilder: (animationController) => ScaleTransition(
-            scale: CurvedAnimation(
-              parent: animationController,
-              curve: Curves.ease,
-            ),
-            child: Circle(
-              size: 12.0,
-              color: Colors.black45,
-            ),
-          ),
-    );
-  }
 }
-
-
-//-------------------------------------------------------------------------------------------------------------------------------
-// Types of trips
-// ----------------------------------------------------------------------------------------------------------------------
-class Adventure extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return null;
-  }
-}
-
-class SightSeeing extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Text("ldfjd");
-  }
-}
-
-class FuckA extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Text("fbh");
-  }
-}
-
-class FuckB extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Text("fj");
-  }
-}
-
-
-
-

@@ -1,69 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:tt/models/model.dart';
+import 'package:tt/models/ModelGuide.dart';
 import 'package:tt/utils/uidata.dart';
 
 class MenuViewModelGuide {
-  List<Menu> menuItemsGuide;
+  List<MenuGuide> menuItemsGuide;
 
   MenuViewModelGuide({this.menuItemsGuide});
 
   getMenuItems() {
-    return menuItemsGuide = <Menu>[
-      Menu(
+    return menuItemsGuide = <MenuGuide>[
+      MenuGuide(
           title: "Profile",
           menuColor: Color(0xff050505),
           icon: Icons.person,
           image: UIData.profileImage,
-          items:"GuideProfile"
+          items:UIData.GuideProfile
       ),
-      Menu(
+      MenuGuide(
           title: "Confirm Requests",
           menuColor: Color(0xffc8c4bd),
           icon: Icons.assignment_turned_in,
           image: UIData.shoppingImage,
-          items:""
+          items:UIData.ConfirmRequest
       ),
-      Menu(
-          title: "Contact Admin",
+      MenuGuide(
+          title: "Chat Room",
           menuColor: Color(0xffc7d8f4),
           icon: Icons.contact_phone,
           image: UIData.contactAdmin,
-          items:"GuideProfile"
+          items:UIData.ChatRoom
       ),
-      Menu(
-          title: "Notifications",
-          menuColor: Color(0xff7f5741),
-          icon: Icons.notification_important,
-          image: UIData.timelineImage,
-          items:"GuideProfile"
-      ),
-      Menu(
-          title: "Dashboard",
+      MenuGuide(
+          title: "Timeline",
           menuColor: Color(0xff261d33),
           icon: Icons.dashboard,
           image: UIData.photos,
-          items:"JoinTrip"
+          items:UIData.GuideTimeline
       ),
-      Menu(
-          title: "Settings",
-          menuColor: Color(0xff2a8ccf),
-          icon: Icons.settings,
-          image: UIData.settingsImage,
-          items:"GuideProfile"
-      ),
-      Menu(
+      MenuGuide(
           title: "Photos",
           menuColor: Color(0xffe19b6b),
           icon: Icons.photo,
           image: UIData.blankImage,
-          items:"GuideProfile"
+          items:UIData.GuidePhotos
       ),
-      Menu(
+      MenuGuide(
           title: "Payment History",
           menuColor: Color(0xffddcec2),
           icon: Icons.payment,
           image: UIData.paymentImage,
-          items:"GuideProfile"
+          items:UIData.GuidePaymentHistory
       ),
     ];
   }

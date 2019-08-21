@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tt/utils/uidata.dart';
 import 'dart:async';
 
-import 'Screens/Tourist/Tourist/GuideProfile.dart';
 import 'Screens/Tourist/Tourist/Login.dart';
-import 'Screens/Tourist/Tourist/Notifications.dart';
-import 'Screens/Tourist/Tourist/Timeline.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -17,13 +14,6 @@ void main() {
     debugShowCheckedModeBanner: false,
     showPerformanceOverlay: false,
     home: Login(),
-
-  
-    routes: <String, WidgetBuilder>{
-      UIData.GuideProfile: (BuildContext context) => GuideProfile(),
-      UIData.Notifications: (BuildContext context) => Notifications(),
-      UIData.Timeline: (BuildContext context) => Timeline(),
-          },
   ));
 }
 

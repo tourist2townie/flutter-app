@@ -2,15 +2,20 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tt/Screens/Admin/AdminMain.dart';
+import 'package:tt/Screens/Guide/ConfirmRequest.dart';
 import 'package:tt/Screens/Guide/GuideFirst.dart';
+import 'package:tt/Screens/Guide/GuidePaymentHistory.dart';
+import 'package:tt/Screens/Guide/GuideProfile.dart';
+import 'package:tt/Screens/Guide/GuideTimeline.dart';
+import 'package:tt/Screens/Tourist/Tourist/Payments.dart';
 import 'package:tt/Screens/Tourist/Tourist/Timeline.dart';
 import 'package:tt/Screens/Tourist/Tourist/TouristProfile.dart';
 import 'package:tt/utils/uidata.dart';
 
+import 'Chatroom.dart';
 import 'First.dart';
 import 'JoinTrip.dart';
 import 'Notifications.dart';
-import 'RegistrationPage.dart';
 
 String username;
 String type;
@@ -23,8 +28,17 @@ class Login extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         UIData.TouristProfile: (BuildContext context) => TouristProfile(),
         UIData.JoinTrip: (BuildContext context) => JoinTrip(),
-        UIData.Notifications: (BuildContext context) => Notifications(),
+        UIData.TouristPhotos: (BuildContext context) => CarouselDemo(),
         UIData.Timeline: (BuildContext context) => Timeline(),
+        UIData.Payment: (BuildContext context) => Payments(),
+        UIData.ChatRoom: (BuildContext context) => ChatRoom(),
+        UIData.GuideProfile:(BuildContext context)=>GuideProfile(),
+        UIData.ConfirmRequest:(BuildContext context)=>ConfirmRequest(),
+        UIData.ChatRoom:(BuildContext context)=>ChatRoom(),
+        UIData.GuideTimeline:(BuildContext context)=>GuideTimeline(),
+        UIData.GuidePhotos:(BuildContext context)=>CarouselDemo(),
+        UIData.GuidePaymentHistory:(BuildContext context)=>GuidePaymentHistory(),
+
       },
       title: 'Tourist 2 Townie',
       home: LoginPage(),
@@ -194,6 +208,6 @@ class _LoginPageState extends State<LoginPage> {
 
   void _navRegistrationPage() {
     Navigator.push(context,
-        new MaterialPageRoute(builder: (context) => RegistrationPage()));
+        new MaterialPageRoute(builder: (context) => HomePageGuide()));
   }
 }

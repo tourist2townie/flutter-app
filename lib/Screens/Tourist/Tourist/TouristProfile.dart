@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tt/Screens/Tourist/Tourist/TouristPhotos.dart';
+
+import 'AutoPhotoLoader.dart';
+
 
 class TouristProfile extends StatefulWidget {
   @override
@@ -101,7 +103,7 @@ class _TouristProfileState extends State<TouristProfile> {
       floatingActionButton: FloatingActionButton.extended(
         label: Text("Photo album"),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder:(context)=>TouristPhotos()) );
+          Navigator.push(context, MaterialPageRoute(builder:(context)=>CarouselPhotoLoader()) );
         },
         backgroundColor: Colors.teal,
         icon: Icon(Icons.photo_album),
