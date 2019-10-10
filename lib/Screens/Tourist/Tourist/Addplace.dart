@@ -1,8 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tt/Widgets/LabelTextField.dart';
+import 'package:http/http.dart' as http;
+
+String apiurl = "http://10.0.2.2:8000/api/addTimeline/";
 
 class AddPlace extends StatefulWidget {
   @override
@@ -12,7 +16,23 @@ class AddPlace extends StatefulWidget {
 }
 
 class AddPlaceState extends State<AddPlace> {
+  TextEditingController place = TextEditingController();
+  TextEditingController date = TextEditingController();
   File _image;
+
+  void addTimeline(BuildContext context) async {
+    final Map<String, dynamic> data = {
+      'place': place.text,
+      'date': date.text,
+      'image': "",
+    };
+    var response = await http.post(apiurl,
+        body: data, encoding: Encoding.getByName("application/json"));
+
+    if (response.statusCode == 200) {
+      print("clicked");
+    }
+  }
 
   getImage(ImageSource source) async {
     var image = await ImagePicker.pickImage(source: source);
@@ -42,6 +62,7 @@ class AddPlaceState extends State<AddPlace> {
                       height: 16,
                     ),
                     LabelTextField(
+                      textEditingController: place,
                       hintText: "Place you went",
                       labelText: "Enter name of the place",
                       validator: null,
@@ -50,6 +71,7 @@ class AddPlaceState extends State<AddPlace> {
                       height: 16.0,
                     ),
                     LabelTextField(
+                      textEditingController: date,
                       hintText: "Date",
                       labelText: "Date you went",
                       validator: null,
@@ -63,7 +85,7 @@ class AddPlaceState extends State<AddPlace> {
                         child: _image == null
                             ? (IconButton(
                                 icon: Icon(Icons.photo_camera),
-                                onPressed: () => getImage(ImageSource.gallery),
+                                onPressed: () => getImage(ImageSource.camera),
                                 iconSize: 40.0,
                                 splashColor: Colors.orange,
                               ))
@@ -80,6 +102,7 @@ class AddPlaceState extends State<AddPlace> {
                                   IconButton(
                                     icon: Icon(Icons.done),
                                     onPressed: () {
+                                      addTimeline(context);
                                       Navigator.pop(context);
                                     },
                                     iconSize: 30.0,

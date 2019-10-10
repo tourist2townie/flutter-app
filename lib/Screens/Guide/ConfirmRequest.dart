@@ -21,7 +21,11 @@ class ConfirmRequestState extends State<ConfirmRequest> {
         backgroundColor: Colors.teal,
       ),
       body: SingleChildScrollView(
-            child:  Column(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.orangeAccent.withOpacity(0.3)
+              ),
+              child:Column(
         children: <Widget>[
           Card1(),
           Card1(),
@@ -29,6 +33,7 @@ class ConfirmRequestState extends State<ConfirmRequest> {
           Card1(),
         ],
       ),
+            ),
           
       ),
     );

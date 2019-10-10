@@ -1,5 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:tt/Screens/Tourist/Tourist/AutoPhotoLoader.dart';
+import 'package:tt/Screens/Tourist/Tourist/TouristProfileUpdate.dart';
+import 'package:tt/utils/ResponseData.dart';
+import 'package:http/http.dart' as http;
+
+String apiUrl = "http://10.0.2.2:8000/api/profileRetrieveGuide/2";
+
+String name;
+String email;
 
 
 class GuideProfile extends StatefulWidget {
@@ -8,6 +18,33 @@ class GuideProfile extends StatefulWidget {
 }
 
 class GuideProfileState extends State<GuideProfile> {
+
+  List data;
+
+    @override
+  void initState() {
+     super.initState();
+
+     this.loadProfile(context);
+     }
+
+  void loadProfile(BuildContext context) async{
+    var response= await http.get( Uri.encodeFull(apiUrl),
+      headers: {"Accept":"application/json"});
+
+      var convertJasonToData = json.decode(response.body);
+      
+      setState(() {
+        name==null?name="Still loading":
+        name= convertJasonToData["name"];
+        email==null?email="Still loading":
+        email= convertJasonToData["email"];
+      });
+
+      print(response.body);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,17 +53,12 @@ class GuideProfileState extends State<GuideProfile> {
         title: Text("Your profile"),
         backgroundColor: Colors.teal,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          color: Colors.orangeAccent.withOpacity(0.3)
-        ),
+      body:SingleChildScrollView(
+        child:  Container(
         child: Column(
           children: <Widget>[
             Card(
               child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.orangeAccent.withOpacity(0.3)
-                ),
                 child: Column(
                   children: <Widget>[
                     Padding(
@@ -34,9 +66,6 @@ class GuideProfileState extends State<GuideProfile> {
                     ),
                     Card(
                         child: Container(
-                          decoration: BoxDecoration(
-                  color: Colors.orangeAccent.withOpacity(0.3)
-                ),
                       child: Column(
                         children: <Widget>[
                           Padding(
@@ -49,12 +78,12 @@ class GuideProfileState extends State<GuideProfile> {
                           ),
                           ListTile(
                             // contentPadding: EdgeInsets.only(left: 150.0),
-                            title: Text(
-                              " Moor",
+                            title:Text(
+                              name,
                               textAlign: TextAlign.center,
                             ),
                             subtitle: Text(
-                              "moor@email.com",
+                              email,
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.black),
                             ),
@@ -99,6 +128,25 @@ class GuideProfileState extends State<GuideProfile> {
                             trailing: Icon(Icons.card_travel),
                           ),
                         ),
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                        ),
+                        Center(
+                          child: ButtonTheme(
+                            height: 50.0,
+                            child: RaisedButton(
+                              color: Colors.teal,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                            onPressed: (){
+                              loadProfile(context);
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context)=>UpdateProfile()
+                              ));
+                            },
+                            child: Text("Update profile"),
+                          ),
+                          )
+                        ),
                       ],
                     ),
                   ),
@@ -107,6 +155,7 @@ class GuideProfileState extends State<GuideProfile> {
             ),
           ],
         ),
+      ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         label: Text("Photo album"),

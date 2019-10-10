@@ -1,119 +1,109 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:tt/Widgets/AnimatedFab.dart';
 
 import 'GuideProfile.dart';
 import 'ReportGuide.dart';
 
-class Adventure extends StatelessWidget {
+String apiurl = "http://10.0.2.2:8000/api/retrieveGuides/";
+String name;
+int length;
+
+List data;
+
+class Adventure extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return AdventureState();
+  }
+}
+
+class AdventureState extends State<Adventure> {
+  @override
+  void initState() {
+    super.initState();
+    this.getGuidesData(context);
+  }
+
+  void getGuidesData(BuildContext context) async {
+    var response = await http
+        .get(Uri.encodeFull(apiurl), headers: {"Accept": "application/json"});
+
+    if (this.mounted) {
+      setState(() {
+        var convertJsonToData = json.decode(response.body);
+        data = convertJsonToData;
+        length = data.length;
+      });
+
+      dispose();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      padding: EdgeInsets.only(top: 40.0),
-      child: Column(
-        children: <Widget>[
-          Text(
-            "Here the guide list. Choose one of them",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20.0,
-            ),
-          ),
-          Card(
-            elevation: 5.0,
-            child: ListTile(
-              onLongPress: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ReportGuide()));
-              },
-              title: Text("Guide 1"),
-              trailing: Text("4.4"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => GuideProfileTourist()),
-                );
-              },
-            ),
-          ),
-          Card(
-            elevation: 5.0,
-            child: ListTile(
-              onLongPress: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ReportGuide()));
-              },
-              title: Text("Guide 2"),
-              trailing: Text("3.2"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => GuideProfileTourist()),
-                );
-              },
-            ),
-          ),
-          Card(
-            elevation: 5.0,
-            child: ListTile(
-              onLongPress: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ReportGuide()));
-              },
-              title: Text("Guide 3"),
-              trailing: Text("3.2"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => GuideProfileTourist()),
-                );
-              },
-            ),
-          ),
-          Card(
-            elevation: 5.0,
-            child: ListTile(
-              onLongPress: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ReportGuide()));
-              },
-              title: Text("Guide 4"),
-              trailing: Text("4.4"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => GuideProfileTourist()),
-                );
-              },
-            ),
-          ),
-          Card(
-            elevation: 5.0,
-            child: ListTile(
-              onLongPress: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ReportGuide()));
-              },
-              title: Text("Guide 5"),
-              trailing: Text("4.4"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => GuideProfileTourist()),
-                );
-              },
-            ),
-          ),
-          Text(
-            "All guides in db will be retrieved",
-            style: TextStyle(color: Colors.black12),
-          )
-        ],
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/images/adven_bac.jpg"),
+                fit: BoxFit.cover)),
+        child: ListView.builder(
+          itemCount: data.length == null ? 0 : data.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(4.0),
+                    ),
+                    Card(
+                      color: Colors.transparent,
+                      semanticContainer: true,
+                      child: ListTile(
+                        selected: false,
+                        onLongPress: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ReportGuide()));
+                        },
+                        leading: CircleAvatar(
+                          minRadius: 3.0,
+                          maxRadius: 25.0,
+                          backgroundImage:
+                              AssetImage("assets/images/circle_avatar.jpg"),
+                        ),
+                        title: Text(
+                          data[index]['name'],
+                          style: TextStyle(color: Colors.white, fontSize: 20.0),
+                        ),
+                        trailing: Text(
+                          "3.2",
+                          style: TextStyle(color: Colors.white, fontSize: 20.0),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => GuideProfileTourist()),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
       ),
-    ));
+      floatingActionButton: AnimatedFab(),
+    );
   }
 }

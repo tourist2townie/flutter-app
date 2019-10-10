@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:tt/Chatroom/Chatroom.dart';
 import 'package:tt/Screens/Admin/AdminMain.dart';
 import 'package:tt/Screens/Guide/ConfirmRequest.dart';
 import 'package:tt/Screens/Guide/GuideFirst.dart';
@@ -8,11 +9,12 @@ import 'package:tt/Screens/Guide/GuidePaymentHistory.dart';
 import 'package:tt/Screens/Guide/GuideProfile.dart';
 import 'package:tt/Screens/Guide/GuideTimeline.dart';
 import 'package:tt/Screens/Tourist/Tourist/Payments.dart';
+import 'package:tt/Screens/Tourist/Tourist/RegistrationPage.dart';
 import 'package:tt/Screens/Tourist/Tourist/Timeline.dart';
 import 'package:tt/Screens/Tourist/Tourist/TouristProfile.dart';
+import 'package:tt/utils/ResponseData.dart';
 import 'package:tt/utils/uidata.dart';
 
-import 'Chatroom.dart';
 import 'First.dart';
 import 'JoinTrip.dart';
 import 'Notifications.dart';
@@ -20,6 +22,8 @@ import 'Notifications.dart';
 String username;
 String type;
 String apiUrl = "http://10.0.2.2:8000/api";
+var id;
+String userId;
 
 class Login extends StatelessWidget {
   @override
@@ -31,14 +35,14 @@ class Login extends StatelessWidget {
         UIData.TouristPhotos: (BuildContext context) => CarouselDemo(),
         UIData.Timeline: (BuildContext context) => Timeline(),
         UIData.Payment: (BuildContext context) => Payments(),
-        UIData.ChatRoom: (BuildContext context) => ChatRoom(),
-        UIData.GuideProfile:(BuildContext context)=>GuideProfile(),
-        UIData.ConfirmRequest:(BuildContext context)=>ConfirmRequest(),
-        UIData.ChatRoom:(BuildContext context)=>ChatRoom(),
-        UIData.GuideTimeline:(BuildContext context)=>GuideTimeline(),
-        UIData.GuidePhotos:(BuildContext context)=>CarouselDemo(),
-        UIData.GuidePaymentHistory:(BuildContext context)=>GuidePaymentHistory(),
-
+        UIData.ChatRoom: (BuildContext context) => Chatroom(),
+        UIData.GuideProfile: (BuildContext context) => GuideProfile(),
+        UIData.ConfirmRequest: (BuildContext context) => ConfirmRequest(),
+        UIData.ChatRoom: (BuildContext context) => Chatroom(),
+        UIData.GuideTimeline: (BuildContext context) => GuideTimeline(),
+        UIData.GuidePhotos: (BuildContext context) => CarouselDemo(),
+        UIData.GuidePaymentHistory: (BuildContext context) =>
+            GuidePaymentHistory(),
       },
       title: 'Tourist 2 Townie',
       home: LoginPage(),
@@ -57,33 +61,36 @@ class _LoginPageState extends State<LoginPage> {
 
   Map user;
 
-  void loginFunc(BuildContext) async {
-    print(_email.text + ':' + _password.text);
+  void loginFunc(BuildContext context, String _email, String _password) async {
+    print(_email + ':' + _password);
     final Map<String, dynamic> data = {
-      "email": _email.text,
-      "password": _password.text
+      "email": _email,
+      "password": _password,
     };
 
-    if (_email.text == "admin" && _password.text == "admin") {
+    if (_email == "admin" && _password == "admin") {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => AdminMain()));
     } else {
       var response = await http.post(apiUrl + '/login',
           body: data, encoding: Encoding.getByName("application/json"));
-      print("------------------------");
-      print(response.body.toString());
-      print("------------------------");
 
-      var value = json.decode(response.body.toString());
-      print(value["user"]["usertype"]);
+      print(response.statusCode);
+      var value = json.decode(response.body);
       var type = (value["user"]["userType"]).toString();
+      id = (value["user"]["id"]).toString();
+      ResponseData.userId = (value['user']['id']).toString();
 
-      if (type == "guide") {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomePageGuide()));
-      } else if (type == "tourist") {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
+      if (response.statusCode == 200) {
+        if (type == "guide") {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => HomePageGuide()));
+        } else if (type == "tourist") {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => HomePage()));
+        }
+      } else {
+        print("cant rout");
       }
     }
   }
@@ -133,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                               Icons.email,
                               color: Colors.black,
                             ),
-                            hintText: 'Username'),
+                            hintText: 'Email'),
                       ),
                     ),
                     Container(
@@ -171,19 +178,13 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.only(top: 6.0, right: 32.0),
                 ),
               ),
-//              Spacer(),
               RaisedButton(
                 child: Text("Login"),
                 color: Colors.teal.withOpacity(0.9),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0)),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => HomePage()));
-                  // loginFunc(context);
-                  print("login");
+                  loginFunc(context, "sandun@gmail.com", "sandun");
                 },
               ),
               Text(
@@ -208,6 +209,6 @@ class _LoginPageState extends State<LoginPage> {
 
   void _navRegistrationPage() {
     Navigator.push(context,
-        new MaterialPageRoute(builder: (context) => HomePageGuide()));
+        new MaterialPageRoute(builder: (context) => RegistrationPage()));
   }
 }

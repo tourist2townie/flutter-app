@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "328368254977",
+    "firebase_url": "https://tourist2townie-ac7ac.firebaseio.com",
+    "project_id": "tourist2townie-ac7ac",
+    "storage_bucket": "tourist2townie-ac7ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328368254977:android:05499a8386ef3b37f05000",
+        "android_client_info": {
+          "package_name": "com.sandun.tt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "328368254977-srju36sg2sn0eqasoeerig4i7lf47nee.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sandun.tt",
+            "certificate_hash": "11606350c865169babf41b25e78a93d736b9cbe5"
+          }
+        },
+        {
+          "client_id": "328368254977-btt0ik14gn9hnrt6mku4pbvfg6bqp3mu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzi5IunW70v3B-AlTuGr3u2mPPsRRU3Rs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "328368254977-btt0ik14gn9hnrt6mku4pbvfg6bqp3mu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

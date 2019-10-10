@@ -4,7 +4,6 @@ import 'package:tt/Bloc/MenuBloc.dart';
 import 'package:tt/models/model.dart';
 import 'package:tt/utils/uidata.dart';
 
-
 class HomePage extends StatelessWidget {
   final _scaffoldState = GlobalKey<ScaffoldState>();
   Size deviceSize;
@@ -58,11 +57,10 @@ class HomePage extends StatelessWidget {
             menu.icon,
             color: Colors.teal,
           ),
-          
           Text(
             menu.title,
             style: TextStyle(
-               height: 3,color: Colors.orange, fontWeight: FontWeight.bold),
+                height: 3, color: Colors.orange, fontWeight: FontWeight.bold),
           )
         ],
       );
@@ -78,14 +76,12 @@ class HomePage extends StatelessWidget {
           centerTitle: false,
           background: Container(
             child: Padding(
-              padding: EdgeInsets.only(top: 10.0 ),
+              padding: EdgeInsets.only(top: 10.0),
             ),
             decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/appBarImage.jpg"),
-                fit: BoxFit.cover
-              )
-            ),
+                image: DecorationImage(
+                    image: AssetImage("assets/images/appBarImage.jpg"),
+                    fit: BoxFit.cover)),
           ),
           title: Row(
             children: <Widget>[

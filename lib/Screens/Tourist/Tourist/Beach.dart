@@ -14,14 +14,14 @@ int length;
 
 List data;
 
-class HistoricalPlaces extends StatefulWidget {
+class Beach extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return HistoricalPlacesState();
+    return BeachState();
   }
 }
 
-class HistoricalPlacesState extends State<HistoricalPlaces> {
+class BeachState extends State<Beach> {
   @override
   void initState() {
     super.initState();
@@ -36,11 +36,7 @@ class HistoricalPlacesState extends State<HistoricalPlaces> {
       setState(() {
         var convertJsonToData = json.decode(response.body);
         data = convertJsonToData;
-        length = data.length;
       });
-
-      print("-------------------");
-      print(data.length);
     }
   }
 
@@ -50,7 +46,7 @@ class HistoricalPlacesState extends State<HistoricalPlaces> {
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/images/hist_bac.jpg"),
+                image: AssetImage("assets/images/beach_bac.jpg"),
                 fit: BoxFit.cover)),
         child: ListView.builder(
           itemCount: data.length == null ? 0 : data.length,
@@ -61,7 +57,7 @@ class HistoricalPlacesState extends State<HistoricalPlaces> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(4.0),
                     ),
                     Card(
                       color: Colors.transparent,

@@ -1,6 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:tt/Screens/Tourist/Tourist/Chatroom.dart';
+import 'package:toast/toast.dart';
+import 'package:tt/Chatroom/Chatroom.dart';
+import 'package:tt/Screens/Tourist/Tourist/RequestedTrips.dart';
 import 'package:tt/Widgets/LabelTextField.dart';
+import 'package:http/http.dart' as http;
+import 'package:tt/utils/ResponseData.dart';
+
+String uId = ResponseData.userId;
+String guideId = ResponseData.guideId.toString();
+String apiurl =
+    'http://10.0.2.2:8000/api/makeTour?guide_id=$guideId&tourist_id=$uId';
 
 class TripRequest extends StatefulWidget {
   @override
@@ -10,6 +21,40 @@ class TripRequest extends StatefulWidget {
 }
 
 class TripRequestState extends State<TripRequest> {
+  TextEditingController _type = TextEditingController();
+  TextEditingController _date = TextEditingController();
+  TextEditingController _place = TextEditingController();
+  TextEditingController _noOfDays = TextEditingController();
+
+  DateTime _jorneyDate;
+
+
+  void _makeTripRequest(BuildContext context) async {
+    final Map<String, dynamic> data = {
+      'tour_type': _type.text,
+      'place': _place.text,
+      'date': _jorneyDate.toString(),
+      'No_of_days': _noOfDays.text,
+      'status': "Pending",
+    };
+    var response = await http.post(apiurl,
+        body: data, encoding: Encoding.getByName("application/json"));
+
+    if (response.statusCode == 200) {
+
+      setState(() {
+        _type.text = "";
+        _place.text = "";
+        _date.text = "";
+        _noOfDays.text = "";
+
+        print(response.statusCode);
+
+        Toast.show("Request sent", context,duration: Toast.LENGTH_LONG);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,13 +65,27 @@ class TripRequestState extends State<TripRequest> {
         ),
         icon: Icon(Icons.chat),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatRoom()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Chatroom()));
         },
         backgroundColor: Colors.teal,
       ),
       appBar: AppBar(
         title: Text("Requesting the trip"),
         backgroundColor: Colors.teal,
+        actions: <Widget>[
+          FlatButton(
+            child: Text(
+              "Requested trips",
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => RequestedTrips()));
+            },
+          ),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(color: Colors.orangeAccent.withOpacity(0.2)),
@@ -41,43 +100,78 @@ class TripRequestState extends State<TripRequest> {
                       height: 16,
                     ),
                     LabelTextField(
-                        hintText: 'Trip type',
-                        labelText: 'Enter trip type',
-                        validator: null),
+                      hintText: 'Trip type',
+                      labelText: 'Enter trip type',
+                      validator: null,
+                      textEditingController: _type,
+                    ),
                     SizedBox(
                       height: 16,
                     ),
                     LabelTextField(
-                        hintText: 'Trip place',
-                        labelText: 'Enter place you want to travel',
-                        validator: null),
+                      hintText: 'Trip place',
+                      labelText: 'Enter place you want to travel',
+                      validator: null,
+                      textEditingController: _place,
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    _jorneyDate == null?ListTile(
+                      trailing: IconButton(
+                        icon: Icon(Icons.calendar_today),
+                        onPressed: (){
+                        showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+                        ).then((date){
+                          setState(() {
+                           _jorneyDate = date; 
+                          });
+                        });
+                        },
+                    ),
+                    title:LabelTextField(
+                      hintText: 'Date',
+                      labelText:"Journey Date",
+                      keyboardType: TextInputType.datetime,
+                      validator: null,
+                      textEditingController: _date,
+                    ),
+                    )
+                    :LabelTextField(
+                      hintText: 'Date',
+                      labelText: _jorneyDate.toString(),
+                      keyboardType: TextInputType.datetime,
+                      validator: null,
+                      textEditingController: _date,
+                    ),
                     SizedBox(
                       height: 16,
                     ),
                     LabelTextField(
-                        hintText: 'Date',
-                        labelText: 'Journey date',
-                        keyboardType: TextInputType.datetime,
-                        validator: null),
-                    SizedBox(
-                      height: 16,
+                      hintText: 'No of days',
+                      labelText: 'No of days',
+                      keyboardType: TextInputType.number,
+                      validator: null,
+                      textEditingController: _noOfDays,
                     ),
-                    LabelTextField(
-                        hintText: 'No of days',
-                        labelText: 'No of days',
-                        keyboardType: TextInputType.number,
-                        validator: null),
                     SizedBox(
                       height: 16,
                     ),
                     Center(
                       child: RaisedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _makeTripRequest(context);
+                        },
                         child: Text(
                           "Sumbit request",
                           style: TextStyle(color: Colors.white),
                         ),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
                         color: Colors.teal,
                       ),
                     )

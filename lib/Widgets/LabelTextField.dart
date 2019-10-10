@@ -10,7 +10,9 @@ class LabelTextField extends StatelessWidget {
   final validator;
   final onSaved;
   final textEditingController;
-  Decoration icon;
+  final Function onTap;
+  final IconButton iconButton;
+  final Icon icon;
   LabelTextField({
     this.hintText,
     this.isObscure = false,
@@ -22,6 +24,8 @@ class LabelTextField extends StatelessWidget {
     this.controller,
     this.textEditingController,
     this.icon,
+    this.onTap,
+    this.iconButton,
   });
 
   @override
@@ -35,6 +39,7 @@ class LabelTextField extends StatelessWidget {
           filled: true,
           fillColor: Colors.black12,
           border: InputBorder.none,
+          icon: icon,
           
         ),
         controller: textEditingController,
@@ -43,6 +48,7 @@ class LabelTextField extends StatelessWidget {
         obscureText: isObscure,
         validator: validator,
         onSaved: onSaved,
+        onTap: onTap,
       ),
     );
   }

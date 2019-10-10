@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ContactAdmin extends StatelessWidget{
+class ContactAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,5 +9,4 @@ class ContactAdmin extends StatelessWidget{
       ),
     );
   }
-  
 }

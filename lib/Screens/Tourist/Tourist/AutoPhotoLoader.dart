@@ -38,9 +38,7 @@ class CarouselPhotoLoaderState extends State<CarouselPhotoLoader> {
         backgroundColor: Colors.teal,
       ),
       body: Container(
-        decoration: BoxDecoration(
-                  color: Colors.orangeAccent.withOpacity(0.3)
-                ),
+        decoration: BoxDecoration(color: Colors.orangeAccent.withOpacity(0.4)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

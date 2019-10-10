@@ -1,4 +1,4 @@
-  import 'dart:convert';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -25,15 +25,6 @@ class _RegistrationState extends State<RegistrationPage> {
   TextEditingController type = TextEditingController();
 
   void register(BuildContext context) async {
-    print(username.text +
-        "," +
-        password.text +
-        "," +
-        email.text +
-        "," +
-        cnfirmPassowrd.text +
-        ',' +
-        type.text);
     final Map<String, dynamic> data = {
       "email": email.text,
       "password": password.text,
@@ -43,17 +34,19 @@ class _RegistrationState extends State<RegistrationPage> {
     };
     var response = await http.post(apiUrl + '/register',
         body: data, encoding: Encoding.getByName("application/json"));
-
-    print("-------------------------------------------------------");
-    print(response.body);
-    print("-------------------------------------------------------");
-
-    if (type.text == "tourist") {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
-    } else if (type.text == "guide") {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomePageGuide()));
+    if (response.statusCode == 200) {
+      if (type.text == "tourist") {
+        print(response.statusCode);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
+      } else if (type.text == "guide") {
+        print(response.statusCode);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomePageGuide()));
+      }
+    } else {
+      print("Cant rout");
+      print(response.statusCode);
     }
   }
 
@@ -71,9 +64,7 @@ class _RegistrationState extends State<RegistrationPage> {
         elevation: 0,
       ),
       body: Container(
-        decoration: BoxDecoration(
-          color: Colors.orangeAccent.withOpacity(0.2)
-        ),
+        decoration: BoxDecoration(color: Colors.orangeAccent.withOpacity(0.2)),
         child: Form(
           child: ListView(
             children: <Widget>[
@@ -158,6 +149,7 @@ class _RegistrationState extends State<RegistrationPage> {
                 ),
                 onPressed: () {
                   register(context);
+                  // Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePageGuide()));
                 }),
           ),
         ),

@@ -1,6 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:tt/Screens/Tourist/Tourist/Chatroom.dart';
 import 'package:tt/Screens/Tourist/Tourist/TripRequest.dart';
+import 'package:http/http.dart' as http;
+import 'package:tt/utils/ResponseData.dart';
+
+// String uId = ResponseData.guideId;
+String uId;
+String name;
+String email;
 
 class GuideProfileTourist extends StatefulWidget {
   @override
@@ -10,6 +18,30 @@ class GuideProfileTourist extends StatefulWidget {
 }
 
 class GuideProfileTouristState extends State<GuideProfileTourist> {
+  List data;
+  String apiUrl = "http://10.0.2.2:8000/api/profileRetrieveGuide/$uId";
+
+  @override
+  void initState() {
+    super.initState();
+
+    this.loadProfile(context);
+  }
+
+  void loadProfile(BuildContext context) async {
+    var response = await http
+        .get(Uri.encodeFull(apiUrl), headers: {"Accept": "application/json"});
+
+    var convertJasonToData = json.decode(response.body);
+    print(response.statusCode);
+    uId = (ResponseData.guideId).toString();
+
+    setState(() {
+      name = convertJasonToData["name"];
+      email = convertJasonToData["email"];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,11 +76,11 @@ class GuideProfileTouristState extends State<GuideProfileTourist> {
                             ListTile(
                               // contentPadding: EdgeInsets.only(left: 150.0),
                               title: Text(
-                                " Moor",
+                                name == null ? 'Still loading' : name,
                                 textAlign: TextAlign.center,
                               ),
                               subtitle: Text(
-                                "moor@email.com",
+                                email == null ? 'Still loading' : email,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(color: Colors.black),
                               ),
@@ -104,7 +136,10 @@ class GuideProfileTouristState extends State<GuideProfileTourist> {
                             minWidth: 150.0,
                             child: RaisedButton(
                               onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>TripRequest()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => TripRequest()));
                               },
                               child: Text(
                                 "Request for a trip",

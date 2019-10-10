@@ -16,10 +16,8 @@ class ReportGuideState extends State<ReportGuide> {
         title: Text("Report guide"),
         backgroundColor: Colors.teal,
       ),
-      body:  Container(
-        decoration: BoxDecoration(
-          color: Colors.orangeAccent.withOpacity(0.2)
-        ),
+      body: Container(
+        decoration: BoxDecoration(color: Colors.orangeAccent.withOpacity(0.2)),
         child: Form(
           child: ListView(
             children: <Widget>[
@@ -47,12 +45,18 @@ class ReportGuideState extends State<ReportGuide> {
                     ButtonTheme(
                       height: 40.0,
                       minWidth: 150.0,
-                   child:RaisedButton(
-                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-                     color: Colors.teal,
-                     onPressed: (){Navigator.pop(context);},
-                     child: Text("Submit",style: TextStyle(color: Colors.white),),
-                   ),
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
+                        color: Colors.teal,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          "Submit",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     ),
                   ],
                 ),

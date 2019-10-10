@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 // import 'package:tt/Screens/Guide/GuideFirst.dart';
 
@@ -13,7 +12,7 @@ class UIData {
   static const String Timeline = "Timeline";
   static const String JoinTrip = "JoinTrip";
   static const String ChatRoom = "ChatRoom";
-  static const String Payment = "Payments";
+  static const String Payment = "Transactions";
   static const String TouristPhotos = "TouristPhotos";
   static const String GuidePhotos = "GuidePhotos";
   static const String ConfirmRequest = "ConfirmRequest";

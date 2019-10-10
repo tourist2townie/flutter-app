@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tt/Screens/Tourist/Tourist/AdventureGuideList.dart';
+import 'package:tt/Screens/Tourist/Tourist/Beach.dart';
 import 'package:tt/Screens/Tourist/Tourist/Hike.dart';
 import 'package:tt/Screens/Tourist/Tourist/HistoricalPlacesGuideList.dart';
 
@@ -11,13 +12,11 @@ class JoinTrip extends StatelessWidget {
         length: 4,
         child: Scaffold(
           appBar: AppBar(
-            
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.teal,
             bottom: TabBar(
               unselectedLabelColor: Colors.red,
               indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50.0),
-                  color: Colors.red),
+                  borderRadius: BorderRadius.circular(50.0), color: Colors.red),
               tabs: <Widget>[
                 Tab(
                   child: Container(
@@ -79,7 +78,7 @@ class JoinTrip extends StatelessWidget {
               Hike(),
               Adventure(),
               HistoricalPlaces(),
-              Icon(Icons.account_balance),
+              Beach()
             ],
           ),
         ),
