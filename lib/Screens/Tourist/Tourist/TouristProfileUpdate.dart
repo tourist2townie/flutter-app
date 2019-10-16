@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:toast/toast.dart';
 import 'package:tt/Widgets/LabelTextField.dart';
 import 'package:http/http.dart' as http;
 
@@ -37,6 +38,9 @@ class UpdateProfileState extends State<UpdateProfile> {
     }).then((response) {
       if (response.statusCode == 200) {
         Navigator.pop(context);
+
+        Toast.show("Succesfuly updated", context);
+        
       } else {
         print('Response status : ${response.statusCode}');
       }

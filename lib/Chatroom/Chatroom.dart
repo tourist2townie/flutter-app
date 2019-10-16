@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:toast/toast.dart';
 import 'package:tt/utils/ResponseData.dart';
 
 import 'Chatting.dart';
-String tripId = ResponseData.onGoingTripId;
-String apiUrl ="http://10.0.2.2:8000/api/tripStatusUpdate/$tripId";
+String apiUrl ="http://10.0.2.2:8000/api/tripStatusUpdate/${ResponseData.onGoingTripId}";
 
 class userDetails{
   final String providerDetail;
@@ -77,10 +77,10 @@ class _ChatroomState extends State<Chatroom> {
         if(response.statusCode==200){
           Navigator.pop(context);
     print('Response status : ${response.statusCode}');
-          
+          Toast.show("Your trip started", context);
         }else{
           
-    print('Response body : ${response.body}');
+    print('Response body : ${response.statusCode}');
         }
   });
 

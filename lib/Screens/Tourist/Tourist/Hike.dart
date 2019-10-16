@@ -49,66 +49,70 @@ class HikeState extends State<Hike> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/images/hike_bac.jpg"),
-                  fit: BoxFit.cover)),
-          child: ListView.builder(
-            itemCount: data.length == 0 ? 0 : data.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(4.0),
-                      ),
-                      Card(
-                        color: Colors.transparent,
-                        semanticContainer: true,
-                        child: ListTile(
-                          selected: false,
-                          onLongPress: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ReportGuide()));
-                          },
-                          leading: CircleAvatar(
-                            minRadius: 3.0,
-                            maxRadius: 25.0,
-                            backgroundImage:
-                                AssetImage("assets/images/circle_avatar.jpg"),
-                          ),
-                          title: Text(
-                            data[index]['name'],
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 20.0),
-                          ),
-                          trailing: Text(
-                            "3.2",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 20.0),
-                          ),
-                          onTap: () {
-                            ResponseData.guideId = (data[index]['id']);
-                            print(ResponseData.guideId);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => GuideProfileTourist()),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/images/hike_bac.jpg"),
+                    fit: BoxFit.cover)),
+            child: showGuides()),
         floatingActionButton: AnimatedFab());
+  }
+
+  Widget showGuides() {
+    return data.length != null?ListView.builder(
+        itemCount: data.length == null ? 0 : data.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(4.0),
+                  ),
+                  Card(
+                    color: Colors.transparent,
+                    semanticContainer: true,
+                    child: ListTile(
+                      selected: false,
+                      onLongPress: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ReportGuide()));
+                      },
+                      leading: CircleAvatar(
+                        minRadius: 3.0,
+                        maxRadius: 25.0,
+                        backgroundImage:
+                            AssetImage("assets/images/circle_avatar.jpg"),
+                      ),
+                      title: Text(
+                        data[index]['name'],
+                        style: TextStyle(color: Colors.white, fontSize: 20.0),
+                      ),
+                      trailing: Text(
+                        "3.2",
+                        style: TextStyle(color: Colors.white, fontSize: 20.0),
+                      ),
+                      onTap: () {
+                        ResponseData.guideId = (data[index]['id']);
+                        print(ResponseData.guideId);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GuideProfileTourist()),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }):Container(
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
   }
 }

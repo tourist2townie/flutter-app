@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:toast/toast.dart';
 import 'package:tt/Screens/Guide/GuideFirst.dart';
 import 'package:tt/Widgets/LabelTextField.dart';
 
@@ -44,6 +45,7 @@ class _RegistrationState extends State<RegistrationPage> {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomePageGuide()));
       }
+      Toast.show("Successfully registered", context,gravity: Toast.LENGTH_LONG);
     } else {
       print("Cant rout");
       print(response.statusCode);

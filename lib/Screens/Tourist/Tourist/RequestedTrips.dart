@@ -72,11 +72,12 @@ class _RequestedTripsState extends State<RequestedTrips> {
                           },
                           onTap: () {
                             detailResponse = data[index]['id'];
+                            print("");
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Chatroom()));
-                            print(detailResponse);
+                            ResponseData.onGoingTripId = detailResponse.toString();
                           },
                           isThreeLine: true,
                           trailing: Text(data[index]['date'])),

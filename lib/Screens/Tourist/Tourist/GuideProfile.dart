@@ -19,7 +19,7 @@ class GuideProfileTourist extends StatefulWidget {
 
 class GuideProfileTouristState extends State<GuideProfileTourist> {
   List data;
-  String apiUrl = "http://10.0.2.2:8000/api/profileRetrieveGuide/$uId";
+  String apiUrl = "http://10.0.2.2:8000/api/profileRetrieveGuide/${ResponseData.guideId}";
 
   @override
   void initState() {

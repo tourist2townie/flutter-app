@@ -1,25 +1,22 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-
+import 'package:toast/toast.dart';
 import 'package:tt/utils/ResponseData.dart';
 import 'package:http/http.dart' as http;
-
 import 'Transaction.dart';
 import 'TripStatus.dart';
 
-// String id = ResponseData.onGoingTripId;
-String id = "2";
+String id = ResponseData.onGoingTripId;
+// String id = "2";
 List data;
 var convertJasonToData;
 int i = 0;
 String tour_type, place, days;
-String uId = ResponseData.userId;
-String guideId = ResponseData.guideId.toString();
-String apiurl1 =
-    'http://10.0.2.2:8000/api/makeTour?guide_id=$guideId&tourist_id=$uId';
-String apiurl2 = 'http://10.0.2.2:8000/api/retrieveOngoingTrip/$id';
-String apiUrl = "http://10.0.2.2:8000/api/tripStatusUpdate/$id";
+
+String apiurl2 =
+    'http://10.0.2.2:8000/api/retrieveOngoingTrip/${ResponseData.onGoingTripId}';
+String apiUrl =
+    "http://10.0.2.2:8000/api/tripStatusUpdate/${ResponseData.onGoingTripId}";
 
 class OngoingTrip extends StatefulWidget {
   @override
@@ -60,6 +57,7 @@ class _OngoingTripState extends State<OngoingTrip> {
     }).then((response) {
       if (response.statusCode == 200) {
         print('Response status : ${response.statusCode}');
+        Toast.show("Trip completed", context);
       } else {
         print('Response body : ${response.body}');
       }
@@ -105,7 +103,7 @@ class _OngoingTripState extends State<OngoingTrip> {
                             leading: Text('Trip type:',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             trailing: Text(
-                                tour_type == null ? "Still loading" : tour_type,
+                                tour_type == null ? "No Ongoing trips" : tour_type,
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                           ),
                           ListTile(
@@ -114,7 +112,7 @@ class _OngoingTripState extends State<OngoingTrip> {
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             trailing: Text(
-                                place == null ? "Still loading" : place,
+                                place == null ? "No Ongoing trips" : place,
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                           ),
                           Padding(
@@ -144,7 +142,26 @@ class _OngoingTripState extends State<OngoingTrip> {
                             minWidth: 300.0,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0)),
-                            child: RaisedButton(
+                            child:days==null? AbsorbPointer(
+                              absorbing: true,
+                               child:RaisedButton(
+                                color: Colors.teal,
+                                child: Text(
+                                  "Complete Trip",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () {
+                                  onGoingTrip(context);
+                                  editTriptatus();
+                                  // completeTrip(context);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Transaction(),
+                                      ));
+                                }),
+
+                            ): RaisedButton(
                                 color: Colors.teal,
                                 child: Text(
                                   "Complete Trip",
