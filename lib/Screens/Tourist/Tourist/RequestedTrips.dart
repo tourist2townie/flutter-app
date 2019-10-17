@@ -34,7 +34,7 @@ class _RequestedTripsState extends State<RequestedTrips> {
         var convertJsonToData = json.decode(response.body);
         data = convertJsonToData;
 
-        print(data[0]["status"]);
+        // print(data[0]["status"]);
       });
     }
   }

@@ -51,6 +51,9 @@ class TripRequestState extends State<TripRequest> {
         print(response.statusCode);
 
         Toast.show("Request sent", context,duration: Toast.LENGTH_LONG);
+       Navigator.pop(context);
+       
+       
       });
     }
   }

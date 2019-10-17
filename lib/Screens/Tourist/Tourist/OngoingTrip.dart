@@ -41,12 +41,15 @@ class _OngoingTripState extends State<OngoingTrip> {
     var response = await http
         .get(Uri.encodeFull(apiurl2), headers: {"Accept": "application/json"});
     convertJasonToData = json.decode(response.body);
+    if(convertJasonToData["tour_type"] != null){
     if (convertJasonToData['status'] == "Ongoing") {
-      print(convertJasonToData['tour_type']);
+      print("sdnlk");
     } else
       print(apiurl2);
+  }else{
+    
   }
-
+  }
   void editTriptatus() {
     http.put(apiUrl, headers: {
       'Accept': 'application/json',

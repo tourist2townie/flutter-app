@@ -27,6 +27,14 @@ class AnimatedFab extends StatelessWidget{
               builder: (context)=>OngoingTrip(),
             ))
           ),
+          SpeedDialChild(
+            backgroundColor: Colors.brown,
+            child: Icon(Icons.panorama_fish_eye),
+            label: "Requested trips",
+            onTap: ()=>Navigator.push(context,MaterialPageRoute(
+              builder: (context)=>RequestedTrips(),
+            ))
+          ),
         ],
     );
       
