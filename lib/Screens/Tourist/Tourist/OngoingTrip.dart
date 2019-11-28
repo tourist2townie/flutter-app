@@ -11,10 +11,10 @@ String id = ResponseData.onGoingTripId;
 List data;
 var convertJasonToData;
 int i = 0;
-String tour_type, place, days;
+String tourtype, place, days;
 
 String apiurl2 =
-    'http://10.0.2.2:8000/api/retrieveOngoingTrip/${ResponseData.onGoingTripId}';
+    'http://10.0.2.2:8000/api/retrieveOngoingTrip/';
 String apiUrl =
     "http://10.0.2.2:8000/api/tripStatusUpdate/${ResponseData.onGoingTripId}";
 
@@ -30,25 +30,28 @@ class _OngoingTripState extends State<OngoingTrip> {
 
     this.onGoingTrip(context);
 
-    setState(() {
-      tour_type = convertJasonToData['tour_type'];
-      place = convertJasonToData['place'];
-      days = convertJasonToData['No_of_days'].toString();
-    });
+    
   }
 
   void onGoingTrip(BuildContext context) async {
+    print(apiUrl);
     var response = await http
         .get(Uri.encodeFull(apiurl2), headers: {"Accept": "application/json"});
     convertJasonToData = json.decode(response.body);
-    if(convertJasonToData["tour_type"] != null){
-    if (convertJasonToData['status'] == "Ongoing") {
+    if(convertJasonToData != null){
+    if (convertJasonToData['status'] == "Ongoing" || convertJasonToData['status'] == null) {
       print("sdnlk");
     } else
       print(apiurl2);
   }else{
     
   }
+
+  setState(() {
+      tourtype = convertJasonToData['tour_type'];
+      place = convertJasonToData['place'];
+      days = convertJasonToData['No_of_days'].toString();
+    });
   }
   void editTriptatus() {
     http.put(apiUrl, headers: {
@@ -106,7 +109,7 @@ class _OngoingTripState extends State<OngoingTrip> {
                             leading: Text('Trip type:',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             trailing: Text(
-                                tour_type == null ? "No Ongoing trips" : tour_type,
+                                tourtype == null ? "No Ongoing trips" : tourtype,
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                           ),
                           ListTile(

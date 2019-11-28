@@ -5,8 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
 import 'package:tt/Screens/Guide/GuideFirst.dart';
 import 'package:tt/Widgets/LabelTextField.dart';
-
-import 'First.dart';
+import 'package:tt/main_screen.dart';
 
 //will be updated
 
@@ -39,7 +38,7 @@ class _RegistrationState extends State<RegistrationPage> {
       if (type.text == "tourist") {
         print(response.statusCode);
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
+            context, MaterialPageRoute(builder: (context) => MainScreen()));
       } else if (type.text == "guide") {
         print(response.statusCode);
         Navigator.pushReplacement(

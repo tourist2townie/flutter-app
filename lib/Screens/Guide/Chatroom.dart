@@ -82,7 +82,7 @@ class ChatroomGuide extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.cancel),
-            onPressed: () {
+            onPressed: () { 
               _alertCancel();
             },
           ),

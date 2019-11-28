@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:dropdownfield/dropdownfield.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 import 'package:tt/Chatroom/Chatroom.dart';
-import 'package:tt/Screens/Tourist/Tourist/RequestedTrips.dart';
 import 'package:tt/Widgets/LabelTextField.dart';
 import 'package:http/http.dart' as http;
 import 'package:tt/utils/ResponseData.dart';
@@ -21,6 +21,7 @@ class TripRequest extends StatefulWidget {
 }
 
 class TripRequestState extends State<TripRequest> {
+  final _formKey = GlobalKey<FormState>();
   TextEditingController _type = TextEditingController();
   TextEditingController _date = TextEditingController();
   TextEditingController _place = TextEditingController();
@@ -28,6 +29,19 @@ class TripRequestState extends State<TripRequest> {
 
   DateTime _jorneyDate;
 
+  Map<String, dynamic> formData;
+  List<String> types = [
+    'Hike',
+    'Beach',
+    'Adventure',
+    'Historical',
+  ];
+
+  TripRequestState() {
+    formData = {
+      // 'Type': 'Hike',
+    };
+  }
 
   void _makeTripRequest(BuildContext context) async {
     final Map<String, dynamic> data = {
@@ -41,7 +55,6 @@ class TripRequestState extends State<TripRequest> {
         body: data, encoding: Encoding.getByName("application/json"));
 
     if (response.statusCode == 200) {
-
       setState(() {
         _type.text = "";
         _place.text = "";
@@ -50,10 +63,8 @@ class TripRequestState extends State<TripRequest> {
 
         print(response.statusCode);
 
-        Toast.show("Request sent", context,duration: Toast.LENGTH_LONG);
-       Navigator.pop(context);
-       
-       
+        Toast.show("Request sent", context, duration: Toast.LENGTH_LONG);
+        Navigator.pop(context);
       });
     }
   }
@@ -84,8 +95,8 @@ class TripRequestState extends State<TripRequest> {
                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => RequestedTrips()));
+              // Navigator.push(context,
+              // MaterialPageRoute(builder: (context) => RequestedTrips()));
             },
           ),
         ],
@@ -102,12 +113,17 @@ class TripRequestState extends State<TripRequest> {
                     SizedBox(
                       height: 16,
                     ),
-                    LabelTextField(
-                      hintText: 'Trip type',
-                      labelText: 'Enter trip type',
-                      validator: null,
-                      textEditingController: _type,
-                    ),
+                    DropDownField(
+                        value: formData['Type'],
+                        required: true,
+                        hintText: 'Choose a type',
+                        labelText: 'Type *',
+                        items: types,
+                        strict: true,
+                        controller: _type,
+                        setter: (dynamic newValue) {
+                          formData['Type'] = newValue;
+                        }),
                     SizedBox(
                       height: 16,
                     ),
@@ -120,37 +136,38 @@ class TripRequestState extends State<TripRequest> {
                     SizedBox(
                       height: 16,
                     ),
-                    _jorneyDate == null?ListTile(
-                      trailing: IconButton(
-                        icon: Icon(Icons.calendar_today),
-                        onPressed: (){
-                        showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2100),
-                        ).then((date){
-                          setState(() {
-                           _jorneyDate = date; 
-                          });
-                        });
-                        },
-                    ),
-                    title:LabelTextField(
-                      hintText: 'Date',
-                      labelText:"Journey Date",
-                      keyboardType: TextInputType.datetime,
-                      validator: null,
-                      textEditingController: _date,
-                    ),
-                    )
-                    :LabelTextField(
-                      hintText: 'Date',
-                      labelText: _jorneyDate.toString(),
-                      keyboardType: TextInputType.datetime,
-                      validator: null,
-                      textEditingController: _date,
-                    ),
+                    _jorneyDate == null
+                        ? ListTile(
+                            trailing: IconButton(
+                              icon: Icon(Icons.calendar_today),
+                              onPressed: () {
+                                showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2100),
+                                ).then((date) {
+                                  setState(() {
+                                    _jorneyDate = date;
+                                  });
+                                });
+                              },
+                            ),
+                            title: LabelTextField(
+                              hintText: 'Date',
+                              labelText: "Journey Date",
+                              keyboardType: TextInputType.datetime,
+                              validator: null,
+                              textEditingController: _date,
+                            ),
+                          )
+                        : LabelTextField(
+                            hintText: 'Date',
+                            labelText: _jorneyDate.toString(),
+                            keyboardType: TextInputType.datetime,
+                            validator: null,
+                            textEditingController: _date,
+                          ),
                     SizedBox(
                       height: 16,
                     ),

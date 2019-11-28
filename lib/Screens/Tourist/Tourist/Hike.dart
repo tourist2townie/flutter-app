@@ -3,10 +3,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:tt/Screens/Tourist/Tourist/OngoingTrip.dart';
 import 'package:tt/Widgets/AnimatedFab.dart';
 import 'package:tt/utils/ResponseData.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'GuideProfile.dart';
 import 'ReportGuide.dart';
@@ -15,7 +13,7 @@ String name;
 int length;
 String apiurl = "http://10.0.2.2:8000/api/retrieveGuides/";
 var guide;
-int Datalength;
+int datalength;
 
 List data;
 
@@ -58,7 +56,7 @@ class HikeState extends State<Hike> {
   }
 
   Widget showGuides() {
-    return data.length != null?ListView.builder(
+    return data != null && data.length != null && data.length > 0 ?ListView.builder(
         itemCount: data.length == null ? 0 : data.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(

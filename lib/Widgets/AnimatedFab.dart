@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:tt/Screens/Tourist/Tourist/OngoingTrip.dart';
-import 'package:tt/Screens/Tourist/Tourist/RequestedTrips.dart';
 import 'package:tt/Screens/Tourist/Tourist/TripStatus.dart';
 
 class AnimatedFab extends StatelessWidget{
@@ -31,9 +30,9 @@ class AnimatedFab extends StatelessWidget{
             backgroundColor: Colors.brown,
             child: Icon(Icons.panorama_fish_eye),
             label: "Requested trips",
-            onTap: ()=>Navigator.push(context,MaterialPageRoute(
-              builder: (context)=>RequestedTrips(),
-            ))
+            // onTap: ()=>Navigator.push(context,MaterialPageRoute(
+            //   builder: (context)=>RequestedTrips(),
+            // ))
           ),
         ],
     );

@@ -1,12 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:image_picker/image_picker.dart';
+import 'package:tt/Screens/Tourist/Tourist/Timeline.dart';
 import 'package:tt/Widgets/LabelTextField.dart';
 import 'package:http/http.dart' as http;
+import 'package:tt/main_screen.dart';
 
 String apiurl = "http://10.0.2.2:8000/api/addTimeline/";
+String uploadedFileURL;
 
 class AddPlace extends StatefulWidget {
   @override
@@ -20,32 +26,48 @@ class AddPlaceState extends State<AddPlace> {
   TextEditingController date = TextEditingController();
   File _image;
 
+   Future uploadFile() async {
+    FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: "sandun@gmail.com", password: "sandun");
+    final String fileName = DateTime.now().toString();
+    StorageReference storageReference =
+        FirebaseStorage.instance.ref().child("timeline/$fileName");
+    StorageUploadTask uploadTask = storageReference.putFile(_image);
+    // await uploadTask.onComplete;
+    print('File Uploaded');
+    uploadedFileURL = await (await uploadTask.onComplete).ref.getDownloadURL();
+    addTimeline(context);
+    print(uploadedFileURL);
+  }
+
   void addTimeline(BuildContext context) async {
     final Map<String, dynamic> data = {
       'place': place.text,
       'date': date.text,
-      'image': "",
+      'image': uploadedFileURL.toString()
     };
     var response = await http.post(apiurl,
         body: data, encoding: Encoding.getByName("application/json"));
 
     if (response.statusCode == 200) {
+      Navigator.push(context,MaterialPageRoute(
+        builder: (context)=>MainScreen()
+      ));
       print("clicked");
     }
   }
 
   getImage(ImageSource source) async {
-    var image = await ImagePicker.pickImage(source: source);
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     _image = image;
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add your favorite photos.."),
-        backgroundColor: Colors.teal,
+        title: Text("Add your favorite photos"),
+        backgroundColor: Colors.indigo,
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -102,8 +124,13 @@ class AddPlaceState extends State<AddPlace> {
                                   IconButton(
                                     icon: Icon(Icons.done),
                                     onPressed: () {
-                                      addTimeline(context);
-                                      Navigator.pop(context);
+                                      uploadFile();
+                                      prefix0.Navigator.pop(context);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Timeline()));
                                     },
                                     iconSize: 30.0,
                                   )

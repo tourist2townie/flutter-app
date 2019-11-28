@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tt/Bloc/MenuBlocGuide.dart';
 import 'package:tt/models/ModelGuide.dart';
-import 'package:tt/models/model.dart';
 import 'package:tt/utils/uidata.dart';
 
 

@@ -10,10 +10,12 @@ import 'package:tt/Screens/Guide/GuideFirst.dart';
 import 'package:tt/Screens/Guide/GuidePaymentHistory.dart';
 import 'package:tt/Screens/Guide/GuideProfile.dart';
 import 'package:tt/Screens/Guide/GuideTimeline.dart';
+import 'package:tt/Screens/Guide/main_screen.dart';
 import 'package:tt/Screens/Tourist/Tourist/Payments.dart';
 import 'package:tt/Screens/Tourist/Tourist/RegistrationPage.dart';
 import 'package:tt/Screens/Tourist/Tourist/Timeline.dart';
 import 'package:tt/Screens/Tourist/Tourist/TouristProfile.dart';
+import 'package:tt/main_screen.dart';
 import 'package:tt/utils/ResponseData.dart';
 import 'package:tt/utils/uidata.dart';
 
@@ -63,14 +65,14 @@ class _LoginPageState extends State<LoginPage> {
 
   Map user;
 
-  void loginFunc(BuildContext context, String _email, String _password) async {
-    print(_email + ':' + _password);
+  void loginFunc(BuildContext context) async {
+    // print(_email + ':' + _password);
     final Map<String, dynamic> data = {
-      "email": _email,
-      "password": _password,
+      "email": _email.text,
+      "password": _password.text,
     };
 
-    if (_email == "admin" && _password == "admin") {
+    if (_email.text == "admin" && _password.text == "admin") {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => AdminMain()));
     } else {
@@ -81,15 +83,16 @@ class _LoginPageState extends State<LoginPage> {
       var value = json.decode(response.body);
       var type = (value["user"]["userType"]).toString();
       id = (value["user"]["id"]).toString();
+      id==null?Toast.show("Invalid login", context):
       ResponseData.userId = (value['user']['id']).toString();
 
       if (response.statusCode == 200) {
         if (type == "guide") {
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => HomePageGuide()));
+              MaterialPageRoute(builder: (context) => GuideMainScreen()));
         } else if (type == "tourist") {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => HomePage()));
+              context, MaterialPageRoute(builder: (context) => MainScreen()));
         }
 
         Toast.show("Login Successfull", context,duration:Toast.LENGTH_LONG);
@@ -188,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0)),
                 onPressed: () {
-                  loginFunc(context, "sandun@gmail.com", "sandun");
+                  loginFunc(context);
                 },
               ),
               Text(

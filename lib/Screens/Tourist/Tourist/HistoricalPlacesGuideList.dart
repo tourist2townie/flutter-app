@@ -52,7 +52,13 @@ class HistoricalPlacesState extends State<HistoricalPlaces> {
             image: DecorationImage(
                 image: AssetImage("assets/images/hist_bac.jpg"),
                 fit: BoxFit.cover)),
-        child: ListView.builder(
+        child:showGuides() 
+      ),
+      floatingActionButton: AnimatedFab(),
+    );
+  }
+  Widget showGuides(){
+    return  data!=null&& data.length!=null&&data.length>0?ListView.builder(
           itemCount: data.length == null ? 0 : data.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
@@ -102,9 +108,10 @@ class HistoricalPlacesState extends State<HistoricalPlaces> {
               ),
             );
           },
-        ),
-      ),
-      floatingActionButton: AnimatedFab(),
-    );
+        ):Container(
+          child: Center(
+            child: CircularProgressIndicator(),
+          )
+        );
   }
 }

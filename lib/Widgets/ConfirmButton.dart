@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tt/Screens/Tourist/Tourist/OngoingTrip.dart';
 import 'package:tt/Screens/Tourist/Tourist/Transaction.dart';
 
 class ConfirmButton extends StatelessWidget {

@@ -11,7 +11,7 @@ class _AdminMainState extends State<AdminMain> {
   @override
   Widget build(BuildContext context) {
     final _kTabPages = <Widget>[
-      _inquiryList(),
+      InquiryList(),
       reports(),
       notification(),
     ];
@@ -103,12 +103,12 @@ class _AdminMainState extends State<AdminMain> {
   }
 }
 
-class _inquiryList extends StatefulWidget {
+class InquiryList extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _inquiryListState();
+  State<StatefulWidget> createState() => InquiryListState();
 }
 
-class _inquiryListState extends State<_inquiryList> {
+class InquiryListState extends State<InquiryList> {
   final _item = List<String>.generate(10, (i) => "Inquiry ${i + 1}");
 
   @override

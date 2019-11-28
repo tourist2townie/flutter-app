@@ -31,6 +31,7 @@ class _TransactionState extends State<Transaction> {
           msg: "Guide successfully rated"
         );
       } else {
+        print(apiUrl);
         print('Response body : ${response.statusCode}');
       }
     });

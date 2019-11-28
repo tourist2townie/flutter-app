@@ -8,6 +8,8 @@ String apiurl = "http://10.0.2.2:8000/api/retrieveTimeline/";
 
 List data;
 
+String image;
+
 class Timeline extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -26,18 +28,18 @@ class TimelineState extends State<Timeline> {
     var response = await http
         .get(Uri.encodeFull(apiurl), headers: {"Accept": "application/json"});
 
-    setState(() {
       var convertJsonToData = json.decode(response.body);
       data = convertJsonToData;
-      print(data[0]['image']);
-    });
+
+      
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: Colors.teal,
+    return Container(
+      child: Scaffold(
+         floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Colors.indigo,
           isExtended: true,
           icon: Icon(Icons.add),
           label: Text("Add"),
@@ -48,70 +50,73 @@ class TimelineState extends State<Timeline> {
         ),
         appBar: AppBar(
           title: Text("Timeline"),
-          backgroundColor: Colors.teal,
+          backgroundColor: Colors.indigo,
         ),
-        body: Container(
-          decoration:
-              BoxDecoration(color: Colors.orangeAccent.withOpacity(0.3)),
-          child: ListView.builder(
-              itemCount: data.length == null ? 0 : data.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  child: Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(4.0),
-                        ),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: Container(
-                            child: Column(
-                              children: <Widget>[
-                                ListTile(
-                                  leading: Text(
-                                    data[index]['place'],
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  trailing: Text(
-                                    data[index]['date'],
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
+        body: _timeline())
+      );
+       
+  }
+
+  Widget _timeline() {
+    return data != null && data.length != null && data.length > 0
+        ? ListView.builder(
+            itemCount: data.length == null ? 0 : data.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(4.0),
+                      ),
+                      Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        child: Container(
+                          child: Column(
+                            children: <Widget>[
+                              ListTile(
+                                leading: Text(
+                                  data[index]['place'],
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                                Container(
-                                  child: Image(
-                                      image: AssetImage(
-                                          "assets/images/chariot_path.jpg")),
+                                trailing: Text(
+                                  data[index]['date'],
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                                ListTile(
-                                  leading: IconButton(
-                                    icon: Icon(
-                                      Icons.favorite,
-                                    ),
-                                    onPressed: () {},
-                                    color: Colors.teal,
+                              ),
+                              Container(
+                                  child:Image.network(data[index]["image"])),
+                              ListTile(
+                                leading: IconButton(
+                                  icon: Icon(
+                                    Icons.favorite,
                                   ),
-                                  trailing: IconButton(
-                                    icon: Icon(
-                                      Icons.delete,
-                                    ),
-                                    onPressed: () {},
-                                    color: Colors.teal,
-                                  ),
+                                  onPressed: () {},
+                                  color: Colors.teal,
                                 ),
-                              ],
-                            ),
+                                trailing: IconButton(
+                                  icon: Icon(
+                                    Icons.delete,
+                                  ),
+                                  onPressed: () {},
+                                  color: Colors.teal,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                );
-              }),
-        ));
+                ),
+              );
+            })
+        : Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
   }
 }

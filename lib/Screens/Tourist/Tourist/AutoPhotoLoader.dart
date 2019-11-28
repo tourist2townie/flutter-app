@@ -37,6 +37,12 @@ class CarouselPhotoLoaderState extends State<CarouselPhotoLoader> {
         title: Text("Photo gallery"),
         backgroundColor: Colors.teal,
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        label: Text("Add photo"),
+        onPressed: (){},
+        backgroundColor: Colors.teal,
+        icon: Icon(Icons.add),
+      ),
       body: Container(
         decoration: BoxDecoration(color: Colors.orangeAccent.withOpacity(0.4)),
         child: Column(
