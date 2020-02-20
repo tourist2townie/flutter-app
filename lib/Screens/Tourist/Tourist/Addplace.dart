@@ -4,12 +4,11 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:image_picker/image_picker.dart';
+import 'package:toast/toast.dart';
 import 'package:tt/Screens/Tourist/Tourist/Timeline.dart';
 import 'package:tt/Widgets/LabelTextField.dart';
 import 'package:http/http.dart' as http;
-import 'package:tt/main_screen.dart';
 
 String apiurl = "http://10.0.2.2:8000/api/addTimeline/";
 String uploadedFileURL;
@@ -25,8 +24,9 @@ class AddPlaceState extends State<AddPlace> {
   TextEditingController place = TextEditingController();
   TextEditingController date = TextEditingController();
   File _image;
+  DateTime _jorneyDate;
 
-   Future uploadFile() async {
+  Future uploadFile() async {
     FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: "sandun@gmail.com", password: "sandun");
     final String fileName = DateTime.now().toString();
@@ -50,16 +50,19 @@ class AddPlaceState extends State<AddPlace> {
         body: data, encoding: Encoding.getByName("application/json"));
 
     if (response.statusCode == 200) {
-      Navigator.push(context,MaterialPageRoute(
-        builder: (context)=>MainScreen()
-      ));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Timeline()));
       print("clicked");
     }
+    // uploadFile();
   }
 
   getImage(ImageSource source) async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
     _image = image;
+    });
   }
 
   @override
@@ -92,12 +95,48 @@ class AddPlaceState extends State<AddPlace> {
                     SizedBox(
                       height: 16.0,
                     ),
-                    LabelTextField(
-                      textEditingController: date,
-                      hintText: "Date",
-                      labelText: "Date you went",
-                      validator: null,
-                    ),
+                    _jorneyDate == null
+                        ? ListTile(
+                            trailing: IconButton(
+                              icon: Icon(Icons.calendar_today),
+                              onPressed: () {
+                                showDatePicker(
+                                  context: context,
+                                  firstDate: DateTime(2000),
+                                  initialDate: DateTime.now(),
+                                  lastDate: DateTime(2100),
+                                ).then((date) {
+                                  setState(() {
+                                    _jorneyDate = date;
+                                  });
+                                });
+                              },
+                            ),
+                            title: LabelTextField(
+                              hintText: 'Date',
+                              labelText: "Journey Date",
+                              keyboardType: TextInputType.datetime,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'This field cant be empty';
+                                }
+                                return null;
+                              },
+                              textEditingController: date,
+                            ),
+                          )
+                        : LabelTextField(
+                            hintText: 'Date',
+                            labelText: _jorneyDate.toString(),
+                            keyboardType: TextInputType.datetime,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'This field cant be empty';
+                              }
+                              return null;
+                            },
+                            textEditingController: date,
+                          ),
                     Padding(
                       padding: EdgeInsets.only(
                         top: 50.0,
@@ -124,13 +163,14 @@ class AddPlaceState extends State<AddPlace> {
                                   IconButton(
                                     icon: Icon(Icons.done),
                                     onPressed: () {
-                                      uploadFile();
-                                      prefix0.Navigator.pop(context);
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  Timeline()));
+                                      if (place.text.isEmpty == true ||
+                                          date.text.isEmpty == true) {
+                                        Toast.show(
+                                            "Make sure data fields are filled",
+                                            context);
+                                      } else {
+                                        uploadFile();
+                                      }
                                     },
                                     iconSize: 30.0,
                                   )
@@ -146,4 +186,3 @@ class AddPlaceState extends State<AddPlace> {
     );
   }
 }
-

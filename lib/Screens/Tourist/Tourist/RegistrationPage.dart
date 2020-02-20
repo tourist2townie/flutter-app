@@ -1,11 +1,11 @@
 import 'dart:convert';
 
+import 'package:dropdownfield/dropdownfield.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:toast/toast.dart';
-import 'package:tt/Screens/Guide/GuideFirst.dart';
+import 'package:tt/Screens/Tourist/Tourist/Login.dart';
 import 'package:tt/Widgets/LabelTextField.dart';
-import 'package:tt/main_screen.dart';
 
 //will be updated
 
@@ -17,6 +17,18 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationState extends State<RegistrationPage> {
+
+  Map<String, dynamic> formData;
+  List<String> types = [
+    'guide',
+    'tourist'
+  ];
+
+  _RegistrationState(){
+    formData={
+
+    };
+  }
   // Controllers
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -31,23 +43,32 @@ class _RegistrationState extends State<RegistrationPage> {
       "name": username.text,
       "password_confirmation": cnfirmPassowrd.text,
       "userType": type.text,
+      "rating": "3",
+      'status': "pending",
     };
-    var response = await http.post(apiUrl + '/register',
-        body: data, encoding: Encoding.getByName("application/json"));
-    if (response.statusCode == 200) {
-      if (type.text == "tourist") {
+
+    if (type.text == "tourist" || type.text == "guide") {
+      var response = await http.post(apiUrl + '/register',
+          body: data, encoding: Encoding.getByName("application/json"));
+      if (response.statusCode == 200) {
+        if (type.text == "tourist") {
+          print(response.statusCode);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => Login()));
+        } else if (type.text == "guide") {
+          print(response.statusCode);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => Login()));
+        }
+        
+      Fluttertoast.showToast(msg: "Successfully registered");
+      } else {
+        print("Cant rout");
         print(response.statusCode);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MainScreen()));
-      } else if (type.text == "guide") {
-        print(response.statusCode);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomePageGuide()));
+      Fluttertoast.showToast(msg: "Enter valid data");
       }
-      Toast.show("Successfully registered", context,gravity: Toast.LENGTH_LONG);
     } else {
-      print("Cant rout");
-      print(response.statusCode);
+      Fluttertoast.showToast(msg: "Enter valid user type");
     }
   }
 
@@ -114,11 +135,17 @@ class _RegistrationState extends State<RegistrationPage> {
                         isObscure: true,
                         validator: null),
                     SizedBox(height: 16),
-                    LabelTextField(
-                        textEditingController: type,
-                        hintText: 'Guide or Tourist',
-                        labelText: 'Enter user type',
-                        validator: null),
+                    DropDownField(
+                        value: formData['Type'],
+                        required: true,
+                        hintText: 'Choose a type',
+                        labelText: 'Type *',
+                        items: types,
+                        strict: true,
+                        controller: type,
+                        setter: (dynamic newValue) {
+                          formData['Type'] = newValue;
+                        }),
                     _registerButton(context),
                   ],
                 ),
@@ -149,8 +176,15 @@ class _RegistrationState extends State<RegistrationPage> {
                       .copyWith(color: Colors.white),
                 ),
                 onPressed: () {
-                  register(context);
-                  // Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePageGuide()));
+                  if (username.text.isEmpty == true ||
+                      password.text.isEmpty == true ||
+                      email.text.isEmpty == true ||
+                      cnfirmPassowrd.text.isEmpty == true ||
+                      type.text.isEmpty == true) {
+                    Fluttertoast.showToast(msg: "Please fill all the fields");
+                  } else {
+                    register(context);
+                  }
                 }),
           ),
         ),

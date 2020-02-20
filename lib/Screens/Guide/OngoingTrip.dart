@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:toast/toast.dart';
-import 'package:tt/Screens/Tourist/Tourist/TouristProfile.dart';
+import 'package:tt/Screens/Guide/ConfirmRequest.dart';
+import 'package:tt/Screens/Guide/GuideProfile.dart';
 import 'package:tt/Screens/Tourist/Tourist/Transaction.dart';
-import 'package:tt/Widgets/MyClipper.dart';
 import 'package:tt/utils/ResponseData.dart';
 import 'package:http/http.dart' as http;
 
@@ -77,20 +77,45 @@ class _OngoingTripsGuideState extends State<OngoingTripsGuide> {
 
   Widget _mainBody() {
     return Container(
-        child: SingleChildScrollView(
-            child: Column(
-      children: <Widget>[
-        Stack(
+        color: Colors.orangeAccent.withOpacity(0.2),
+        child: ListView(
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                Tripscells(),
-              ],
-            )
+            _profileName(),
+            Tripscells(),
+            ConfirmRequest(),
           ],
-        )
+        ));
+  }
+
+  Widget _profileName() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        InkWell(
+          child: Text(
+            name != null ? name : "Loading",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.indigo,
+                fontSize: 30),
+          ),
+          onTap: (){Navigator.push(context,MaterialPageRoute(
+            builder: (context)=>GuideProfile(),
+          ));},
+        ),
+        CircleAvatar(
+          radius: 30,
+          child: ClipOval(
+            child: Image.network(
+              profileImageUrl != null ? profileImageUrl : "",
+              fit: BoxFit.fill,
+              height: 150,
+              width: 150,
+            ),
+          ),
+        ),
       ],
-    )));
+    );
   }
 }
 
@@ -128,8 +153,8 @@ class _TripscellsState extends State<Tripscells> {
       if (response.statusCode == 200) {
         print('Response status : ${response.statusCode}');
         Toast.show("Trip completed", context);
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => Transaction()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Transaction()));
       } else {
         print('Response body : ${response.body}');
       }
@@ -138,11 +163,10 @@ class _TripscellsState extends State<Tripscells> {
 
   @override
   Widget build(BuildContext context) {
-    return convertJasonToData != null
+    return tourtype != null
         ? Container(
             child: Column(
               children: <Widget>[
-                myClipPath(),
                 Padding(
                   padding: EdgeInsets.only(top: 40),
                 ),
@@ -160,61 +184,7 @@ class _TripscellsState extends State<Tripscells> {
               ],
             ),
           )
-        : Container(child: myClipPath());
-  }
-
-  Widget myClipPath() {
-    return ClipPath(
-      clipper: MyClipper(),
-      child: Container(
-          height: 300,
-          decoration: BoxDecoration(color: Colors.indigo),
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 40,
-              ),
-              ListTile(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TouristProfile()));
-                },
-                title: Text(
-                  name != null ? name : "Loading",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 30),
-                ),
-                trailing: CircleAvatar(
-                  radius: 40,
-                  child: ClipOval(
-                    child: Image.network(
-                      profileImageUrl != null ? profileImageUrl : "",
-                      fit: BoxFit.cover,
-                      height: 150,
-                      width: 100,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 80,
-              ),
-              Center(
-                child: Text(
-                  "Ongoing",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 40),
-                ),
-              ),
-            ],
-          )),
-    );
+        :SizedBox();
   }
 
   Widget _buildFrontWidget() {
@@ -334,7 +304,7 @@ class _TripscellsState extends State<Tripscells> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     trailing: Text(
-                                      days == null ? "No ongoing trips" : date,
+                                      days == null ? "No ongoing trips" : days,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     )),
@@ -395,5 +365,3 @@ class _TripscellsState extends State<Tripscells> {
     );
   }
 }
-
-

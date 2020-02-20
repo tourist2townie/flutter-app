@@ -1,31 +1,29 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:tt/Screens/Tourist/Tourist/TripRequest.dart';
 import 'package:http/http.dart' as http;
 import 'package:tt/utils/ResponseData.dart';
 
-// String uId = ResponseData.guideId;
 
-
-class GuideProfileTourist extends StatefulWidget {
+class TouristProfileAdmin extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return GuideProfileTouristState();
-  }
+  _TouristProfileAdminState createState() => _TouristProfileAdminState();
 }
 
-class GuideProfileTouristState extends State<GuideProfileTourist> {
-  String apiUrl = "http://10.0.2.2:8000/api/profileRetrieveGuide/${ResponseData.searchedGuide}";
+class _TouristProfileAdminState extends State<TouristProfileAdmin> {
+
+  String apiUrl = "http://10.0.2.2:8000/api/profileRetrieveGuide/${ResponseData.searchedTourist}";
   String name;
   String email;
   String image;
+
 
   @override
   void initState() {
     this.loadProfile(context);
     super.initState();
   }
+
 
    void loadProfile(BuildContext context) async {
     var response = await http
@@ -43,13 +41,12 @@ class GuideProfileTouristState extends State<GuideProfileTourist> {
 
     // image = convertJasonToData["profile_image"];
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Your profile"),
+        title: Text("Tourist profile"),
         backgroundColor: Colors.teal,
       ),
       body: SingleChildScrollView(
@@ -132,26 +129,6 @@ class GuideProfileTouristState extends State<GuideProfileTourist> {
                           ),
                           Padding(
                             padding: EdgeInsets.all(10.0),
-                          ),
-                          ButtonTheme(
-                            height: 40.0,
-                            minWidth: 150.0,
-                            child: RaisedButton(
-                              onPressed: () {
-                                print(name);
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => TripRequest()));
-                              },
-                              child: Text(
-                                "Request for a trip",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0)),
-                              color: Colors.teal,
-                            ),
                           ),
                         ],
                       ),

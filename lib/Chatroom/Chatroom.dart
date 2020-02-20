@@ -6,14 +6,10 @@ import 'package:flutter_signin_button/button_view.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
-import 'package:tt/main_screen.dart';
 import 'package:tt/utils/ResponseData.dart';
 
 import 'Chatting.dart';
 
-String apiUrl =
-    "http://10.0.2.2:8000/api/tripStatusUpdate/${ResponseData.onGoingTripId}";
-var tripId = ResponseData.onGoingTripId;
 
 class userDetails {
   final String providerDetail;
@@ -30,15 +26,20 @@ class ProviderDetails {
   final String providerDetails;
 }
 
-class Chatroom extends StatefulWidget {
+class Chatroom extends StatefulWidget{
   @override
   _ChatroomState createState() => _ChatroomState();
 }
 
 class _ChatroomState extends State<Chatroom> {
+
+  String apiUrl =
+    "http://10.0.2.2:8000/api/tripStatusUpdate/${ResponseData.onGoingTripId}";
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   FirebaseUser user;
+
+  
 
 //Google login
   Future<FirebaseUser> _signIn(BuildContext context) async {
@@ -69,7 +70,6 @@ class _ChatroomState extends State<Chatroom> {
   }
 
   void editTriptatus() {
-    ResponseData.onGoingTripId = tripId;
     print(apiUrl);
     http.put(apiUrl, headers: {
       'Accept': 'application/json',
@@ -79,8 +79,7 @@ class _ChatroomState extends State<Chatroom> {
       "status": "Ongoing",
     }).then((response) {
       if (response.statusCode == 200) {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MainScreen()));
+        Navigator.pop(context);
         print('Response status : ${response.statusCode}');
         Toast.show("Your trip started", context);
       } else {
@@ -106,21 +105,17 @@ class _ChatroomState extends State<Chatroom> {
                 _signIn(context).then((FirebaseUser user)=>print(user.uid)).catchError((e)=>print(e));
               },
             ),
-            SignInButton(
-              Buttons.Facebook,
-              onPressed: (){
-              },
-            ),
-            SignInButton(
-              Buttons.Email,
-              onPressed: (){
-              },
-            ),
-
+           
             FlatButton(
               child: Text("Start Trip"),
               onPressed: (){
                 editTriptatus();
+              },
+            ),
+            FlatButton(
+              child: Text("Sign out"),
+              onPressed: (){
+                _signOut();
               },
             )
           ],

@@ -3,18 +3,20 @@ import 'dart:core';
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
-import 'dart:typed_data';
 import 'package:tt/Screens/Tourist/Tourist/TouristProfileUpdate.dart';
 import 'package:http/http.dart' as http;
 import 'package:tt/utils/ResponseData.dart';
-import 'AutoPhotoLoader.dart';
 import 'OngoingTripCell.dart';
 
 String uid = ResponseData.userId;
 String name;
 String image;
 String email;
-String apiUrl = "http://10.0.2.2:8000/api/profileRetrieve/${ResponseData.userId}";
+String apiUrl =
+    "http://10.0.2.2:8000/api/profileRetrieve/${ResponseData.userId}";
+
+String tripsUrl =
+    "http://10.0.2.2:8000/api/retrieveTrips/${ResponseData.userId}";
 
 class TouristProfile extends StatefulWidget {
   @override
@@ -22,13 +24,17 @@ class TouristProfile extends StatefulWidget {
 }
 
 class _TouristProfileState extends State<TouristProfile> {
-  List data;
+  Map data;
+  double rating;
+  int tripsconut;
 
   @override
   void initState() {
     super.initState();
 
     this.loadProfile(context);
+    this.retrieveTrips(context);
+    
   }
 
   void loadProfile(BuildContext context) async {
@@ -44,8 +50,21 @@ class _TouristProfileState extends State<TouristProfile> {
         image = convertJasonToData['profile_image'];
       });
     }
+  }
 
-    // image = convertJasonToData["profile_image"];
+  void retrieveTrips(BuildContext context) async {
+    var response = await http
+        .get(Uri.encodeFull(apiUrl), headers: {"Accept": "application/json"});
+
+    if (this.mounted) {
+      data = json.decode(response.body.toString());
+      
+      tripsconut = data['rating'];
+       print(data);
+       print(response.body);
+
+
+    }
   }
 
   @override
@@ -54,7 +73,7 @@ class _TouristProfileState extends State<TouristProfile> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("Your profile"),
-        backgroundColor: Colors.teal,
+        backgroundColor: Colors.indigo,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -66,16 +85,6 @@ class _TouristProfileState extends State<TouristProfile> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        label: Text("Photo album"),
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CarouselPhotoLoader()));
-        },
-        backgroundColor: Colors.teal,
-        icon: Icon(Icons.photo_album),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
@@ -90,28 +99,28 @@ class _TouristProfileState extends State<TouristProfile> {
                 Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.0)),
-                  color: Colors.teal,
+                  color: Colors.indigo,
                   child: ListTile(
-                    title: Text("Trips :"),
-                    trailing: Text("13 successful"),
+                    title: Text("Trips :",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                    trailing: Text( "11 Successfull",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
                   ),
                 ),
                 Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.0)),
-                  color: Colors.teal,
+                  color: Colors.indigo,
                   child: ListTile(
-                    title: Text("Current Rating :"),
-                    trailing: Text("4.9"),
+                    title: Text("Current Rating :",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+                    trailing: Text("4.3",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
                   ),
                 ),
                 Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.0)),
-                  color: Colors.teal,
+                  color: Colors.indigo,
                   child: ListTile(
-                    title: Text("Current Badge :"),
-                    trailing: Icon(Icons.card_travel),
+                    title: Text("Current Badge :",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+                    trailing: Icon(Icons.card_travel,color: Colors.white,),
                   ),
                 ),
                 Padding(
@@ -121,7 +130,7 @@ class _TouristProfileState extends State<TouristProfile> {
                     child: ButtonTheme(
                   height: 50.0,
                   child: RaisedButton(
-                    color: Colors.teal,
+                    color: Colors.indigo,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(80.0)),
                     onPressed: () {
@@ -131,7 +140,7 @@ class _TouristProfileState extends State<TouristProfile> {
                           MaterialPageRoute(
                               builder: (context) => UpdateProfile()));
                     },
-                    child: Text("Update profile"),
+                    child: Text("Update profile",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
                   ),
                 )),
               ],

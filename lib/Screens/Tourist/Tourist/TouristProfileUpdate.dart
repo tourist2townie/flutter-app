@@ -4,8 +4,8 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:toast/toast.dart';
 import 'package:tt/Widgets/LabelTextField.dart';
 import 'package:http/http.dart' as http;
 import 'package:tt/utils/ResponseData.dart';
@@ -29,21 +29,21 @@ class UpdateProfileState extends State<UpdateProfile> {
 
   getImage(ImageSource source) async {
     var image = await ImagePicker.pickImage(source: source);
+    setState(() {
     _image = image;
-    setState(() {});
+    });
   }
 
   Future uploadFile() async {
-    FirebaseUser user = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-            email: 'sandun@gmail.com', password: "sandun");
+    FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: 'sandun@gmail.com', password: "sandun");
     final String fileName = DateTime.now().toString();
     StorageReference storageReference =
         FirebaseStorage.instance.ref().child("images/$fileName");
     StorageUploadTask uploadTask = storageReference.putFile(_image);
     // await uploadTask.onComplete;
     print('File Uploaded');
-    uploadedFileURL = await(await uploadTask.onComplete).ref.getDownloadURL();
+    uploadedFileURL = await (await uploadTask.onComplete).ref.getDownloadURL();
 
     editData();
     print(uploadedFileURL);
@@ -60,11 +60,12 @@ class UpdateProfileState extends State<UpdateProfile> {
       'profile_image': uploadedFileURL.toString(),
     }).then((response) {
       if (response.statusCode == 200) {
-        Navigator.pop(context);
-        Toast.show("Succesfuly updated", context);
-      } else {
         print('Response status : ${response.statusCode}');
         print(response.body);
+        // Toast.show("Succesfuly updated", context);
+        Fluttertoast.showToast(msg: "Successfully updated");
+      } else {
+        Navigator.pop(context);
       }
     });
   }
@@ -80,7 +81,7 @@ class UpdateProfileState extends State<UpdateProfile> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Update Profile"),
-          backgroundColor: Colors.teal,
+          backgroundColor: Colors.indigo,
         ),
         body: Builder(builder: (context) {
           return Form(
@@ -97,7 +98,13 @@ class UpdateProfileState extends State<UpdateProfile> {
                       LabelTextField(
                         hintText: "Enter new username",
                         labelText: "New username",
-                        validator: null,
+                        // validator: null,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter the data';
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(
                         height: 16,
@@ -106,6 +113,12 @@ class UpdateProfileState extends State<UpdateProfile> {
                         textEditingController: newNameController,
                         hintText: "Enter new name",
                         labelText: "New name",
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter the data';
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(
                         height: 16,
@@ -114,6 +127,13 @@ class UpdateProfileState extends State<UpdateProfile> {
                         textEditingController: newEmailController,
                         hintText: "Enter new Email address",
                         labelText: "New Email address",
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter the email';
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(
                         height: 16,
@@ -144,10 +164,16 @@ class UpdateProfileState extends State<UpdateProfile> {
                             height: 50.0,
                             child: RaisedButton(
                               onPressed: () {
-                                uploadFile();
+                                if (newEmailController.text.isEmpty == true ||
+                                    newNameController.text.isEmpty == true) {
+                                  Fluttertoast.showToast(
+                                      msg: "Cant keep field empty");
+                                } else {
+                                  uploadFile();
+                                }
                               },
                               child: Text("Update"),
-                              color: Colors.teal,
+                              color: Colors.indigo,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(80.0)),
                             )),

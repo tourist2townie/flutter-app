@@ -6,9 +6,9 @@ import 'package:flutter_rating/flutter_rating.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:toast/toast.dart';
 import 'package:tt/Screens/Tourist/Tourist/JoinTrip.dart';
+import 'package:tt/Screens/Tourist/Tourist/RequestedTrips.dart' as prefix1;
 import 'package:tt/Screens/Tourist/Tourist/TouristProfile.dart';
 import 'package:tt/Screens/Tourist/Tourist/Transaction.dart' as prefix0;
-import 'package:tt/Widgets/MyClipper.dart';
 import 'package:tt/utils/ResponseData.dart';
 import 'package:http/http.dart' as http;
 
@@ -31,6 +31,7 @@ class _OngoingTripState extends State<OngoingTripCell> {
   void initState() {
     this.loadProfile(context);
     this.onGoingTrip(context);
+    print(ResponseData.userId);
     super.initState();
   }
 
@@ -104,20 +105,57 @@ class _OngoingTripState extends State<OngoingTripCell> {
 
   Widget _mainBody() {
     return Container(
-        child: SingleChildScrollView(
-            child: Column(
-      children: <Widget>[
-        Stack(
+        child: ListView(
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                Tripscells(),
-              ],
-            )
+            SizedBox(
+              height: 20,
+            ),
+            _profileName(),
+            SafeArea(
+              child: Tripscells(),
+            ),
+            SafeArea(
+              child: prefix1.RequestedTripsCells(),
+            ),
           ],
-        )
+        ));
+  }
+
+  Widget _profileName() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(left: 0.1),
+        ),
+        InkWell(
+          child: Container(
+            child: Text(
+              name != null ? name : "Loading",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.indigo,
+                  fontSize: 30),
+            ),
+          ),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TouristProfile()));
+          },
+        ),
+        CircleAvatar(
+          radius: 40,
+          child: ClipOval(
+            child: Image.network(
+              profileImageUrl != null ? profileImageUrl : "",
+              fit: BoxFit.cover,
+              height: 150,
+              width: 100,
+            ),
+          ),
+        ),
       ],
-    )));
+    );
   }
 }
 
@@ -169,10 +207,8 @@ class _TripscellsState extends State<Tripscells> {
         ? Container(
             child: Column(
               children: <Widget>[
-                myClipPath(),
-                Padding(
-                  padding: EdgeInsets.only(top: 40),
-                ),
+                // myClipPath(),
+
                 SimpleFoldingCell(
                     key: _foldingCellKey,
                     frontWidget: _buildFrontWidget(),
@@ -187,66 +223,12 @@ class _TripscellsState extends State<Tripscells> {
               ],
             ),
           )
-        : Container(child: myClipPath());
-  }
-
-  Widget myClipPath() {
-    return ClipPath(
-      clipper: MyClipper(),
-      child: Container(
-          height: 300,
-          decoration: BoxDecoration(color: Colors.indigo),
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 40,
-              ),
-              ListTile(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TouristProfile()));
-                },
-                title: Text(
-                  name != null ? name : "Loading",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 30),
-                ),
-                trailing: CircleAvatar(
-                  radius: 40,
-                  child: ClipOval(
-                    child: Image.network(
-                      profileImageUrl != null ? profileImageUrl : "",
-                      fit: BoxFit.cover,
-                      height: 150,
-                      width: 100,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 80,
-              ),
-              Center(
-                child: Text(
-                  "Ongoing",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 40),
-                ),
-              ),
-            ],
-          )),
-    );
+        : Container();
   }
 
   Widget _buildFrontWidget() {
     return Container(
-        color: Colors.black,
+        color: Colors.grey[600],
         alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -269,7 +251,7 @@ class _TripscellsState extends State<Tripscells> {
               color: Colors.indigoAccent,
               splashColor: Colors.white.withOpacity(0.5),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
+                  borderRadius: BorderRadius.circular(8)),
             )
           ],
         ));
@@ -345,7 +327,7 @@ class _TripscellsState extends State<Tripscells> {
                         editTriptatus();
                         onGoingTrip(context);
                       },
-                      child: Text("Confirm Request"),
+                      child: Text("Complete Trip"),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0)),
                       color: Colors.white,
@@ -405,7 +387,7 @@ class _TripscellsState extends State<Tripscells> {
                                     onGoingTrip(context);
                                     editTriptatus();
                                   },
-                                  child: Text("Confirm Request"),
+                                  child: Text("Complete trip"),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8.0)),
                                   color: Colors.white,

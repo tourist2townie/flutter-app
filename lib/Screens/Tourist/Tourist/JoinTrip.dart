@@ -1,38 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:tt/Screens/Tourist/Tourist/AdventureGuideList.dart';
-import 'package:tt/Screens/Tourist/Tourist/Beach.dart';
-import 'package:tt/Screens/Tourist/Tourist/Hike.dart';
-import 'package:tt/Screens/Tourist/Tourist/HistoricalPlacesGuideList.dart';
+import 'package:tt/Screens/Tourist/Tourist/AllGuides.dart';
+import 'package:tt/Screens/Tourist/Tourist/Packages.dart';
+import 'package:tt/utils/ResponseData.dart';
+
+import 'SearchResult.dart';
 
 String place;
 
-class JoinTrip extends StatelessWidget {
+class JoinTrip extends StatefulWidget {
+  @override
+  _JoinTripState createState() => _JoinTripState();
+}
+
+class _JoinTripState extends State<JoinTrip> with TickerProviderStateMixin {
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = new TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: DefaultTabController(
-        length: 4,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Center(
-              child: place != null ? Text(place) : Text("All guides"),
+        home: DefaultTabController(
+      length: 2,
+      child: Scaffold(
+          bottomNavigationBar: Material(
+            color: Colors.white,
+            child: TabBar(
+              controller: _tabController,
+              indicatorColor: Colors.indigo,
+              labelColor: Colors.indigo,
+              unselectedLabelColor: Colors.grey,
+              tabs: <Widget>[
+                Tab(
+                  icon: Icon(Icons.all_inclusive),
+                  text: "All guides",
+                ),
+                Tab(
+                  icon: Icon(Icons.list),
+                  child: Text('Packages'),
+                )
+              ],
             ),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  showSearch(context: context, delegate: GuideSearch());
-                },
-              )
-            ],
-            backgroundColor: Colors.indigo,
           ),
-          body: SafeArea(
-            child: Hike(),
-          )
-        ),
-      ),
-    );
+          body: TabBarView(
+            controller: _tabController,
+            children: <Widget>[
+              AllGuides(),
+              Packages(),
+            ],
+          )),
+    ));
   }
 }
 
@@ -43,6 +70,12 @@ class GuideSearch extends SearchDelegate<String> {
     "Nuckels",
     "Nilaweli",
     "Chariot path",
+    "Ella",
+    "Weligama",
+    'Katusukonda',
+    'Upper diyaluma',
+    'Adams peak'
+    'weligama'
   ];
 
   final recentPlaces = [
@@ -86,6 +119,7 @@ class GuideSearch extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    ResponseData.searchQuery = query;
     //show search something
     final suggestionList = query.isEmpty
         ? recentPlaces
@@ -111,7 +145,9 @@ class GuideSearch extends SearchDelegate<String> {
           ),
           onTap: () {
             place = suggestionList[index];
-            Navigator.pop(context);
+            ResponseData.searchQuery = suggestionList[index];
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SearchResult()));
           },
         );
       },

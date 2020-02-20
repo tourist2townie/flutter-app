@@ -29,19 +29,8 @@ class _TripStatusState extends State<TripStatus> {
     if (this.mounted) {
       setState(() {
         var convertJsonToData = json.decode(response.body);
-        //shard pref instead of 1
         data = convertJsonToData;
       });
-      // for(int i=0;i<data.length;i++){
-      //   if (data[i]['status'] == "Pending") {
-      //     color = Colors.teal;
-      //   }
-      //   else if (data[i]['status'] == "Completed") {
-      //     color = Colors.red;
-      //   }else{
-      //     color = Colors.blue;
-      //   }
-      // }
     }
   }
 

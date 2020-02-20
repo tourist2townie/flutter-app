@@ -11,7 +11,7 @@ String id = ResponseData.onGoingTripId;
 List data;
 var convertJasonToData;
 int i = 0;
-String tourtype, place, days;
+String tourtype, place, days ;
 
 String apiurl2 =
     'http://10.0.2.2:8000/api/retrieveOngoingTrip/';
@@ -27,7 +27,6 @@ class _OngoingTripState extends State<OngoingTrip> {
   @override
   void initState() {
     super.initState();
-
     this.onGoingTrip(context);
 
     
@@ -74,7 +73,7 @@ class _OngoingTripState extends State<OngoingTrip> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Ongoing trip'),
+          title: Text('Ongoing trip',),
           backgroundColor: Colors.teal,
           actions: <Widget>[
             FlatButton(
@@ -128,7 +127,7 @@ class _OngoingTripState extends State<OngoingTrip> {
                             leading: Text('No of Days remaining:',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             trailing: Text(
-                                days == null ? "Still loading" : days,
+                                days == null ? "No ongoing trips" :days,
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                           ),
                           Padding(

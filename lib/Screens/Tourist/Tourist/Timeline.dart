@@ -18,11 +18,6 @@ class Timeline extends StatefulWidget {
 }
 
 class TimelineState extends State<Timeline> {
-  @override
-  void initState() {
-    super.initState();
-    this.getTimelineData(context);
-  }
 
   void getTimelineData(BuildContext context) async {
     var response = await http
@@ -30,9 +25,16 @@ class TimelineState extends State<Timeline> {
 
       var convertJsonToData = json.decode(response.body);
       data = convertJsonToData;
-
-      
   }
+
+  
+  @override
+  void initState() {
+    super.initState();
+    this.getTimelineData(context);
+  }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -89,13 +91,6 @@ class TimelineState extends State<Timeline> {
                               Container(
                                   child:Image.network(data[index]["image"])),
                               ListTile(
-                                leading: IconButton(
-                                  icon: Icon(
-                                    Icons.favorite,
-                                  ),
-                                  onPressed: () {},
-                                  color: Colors.teal,
-                                ),
                                 trailing: IconButton(
                                   icon: Icon(
                                     Icons.delete,
@@ -115,7 +110,7 @@ class TimelineState extends State<Timeline> {
             })
         : Container(
             child: Center(
-              child: CircularProgressIndicator(),
+              child: Text("No timelines yet"),
             ),
           );
   }

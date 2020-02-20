@@ -6,7 +6,6 @@ import 'package:flutter_rating/flutter_rating.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:tt/Chatroom/Chatroom.dart';
-import 'package:tt/Widgets/MyClipper.dart';
 import 'package:tt/utils/ResponseData.dart';
 
 String uId = ResponseData.userId;
@@ -30,7 +29,7 @@ class _RequestedTripsCellsState extends State<RequestedTripsCells> {
 
   void getRequestedTrips(BuildContext context) async {
     var response = await http
-        .get(Uri.encodeFull(apiurl), headers: {"Accept": "application/json"});
+        .get(Uri.encodeFull(apiurl), headers: {"Accept": "application/json",});
 
     if (this.mounted) {
       setState(() {
@@ -42,31 +41,7 @@ class _RequestedTripsCellsState extends State<RequestedTripsCells> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: ListView(
-      children: <Widget>[
-        ClipPath(
-          clipper: MyClipper(),
-          child: Container(
-            height: 320,
-            decoration: BoxDecoration(color: Colors.indigo),
-            child: Center(
-              child: Text(
-                "Requested Trips",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 40),
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        _cell()
-      ],
-    ));
+    return _cell();
   }
 
   Widget _cell() {
@@ -83,7 +58,7 @@ class _RequestedTripsCellsState extends State<RequestedTripsCells> {
                   cellSize: Size(MediaQuery.of(context).size.width, 200),
                   padding: EdgeInsets.all(15),
                   animationDuration: Duration(milliseconds: 300),
-                  borderRadius: 10,
+                  borderRadius: 8,
                   onOpen: () => print('$index cell opened'),
                   onClose: () => print('$index cell closed'));
             })
@@ -94,7 +69,7 @@ class _RequestedTripsCellsState extends State<RequestedTripsCells> {
     return Builder(
       builder: (BuildContext context) {
         return Container(
-            color: Colors.black,
+            color: Colors.grey[600],
             alignment: Alignment.center,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -122,7 +97,7 @@ class _RequestedTripsCellsState extends State<RequestedTripsCells> {
                   color: Colors.indigoAccent,
                   splashColor: Colors.white.withOpacity(0.5),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
+                      borderRadius: BorderRadius.circular(8)),
                 )
               ],
             ));
@@ -195,8 +170,8 @@ class _RequestedTripsCellsState extends State<RequestedTripsCells> {
                       ),
                       collapsed: RaisedButton(
                         onPressed: () {
-                          data[index]['id'] = ResponseData.onGoingTripId;
-                          print(data[index]['id']);
+                         ResponseData.onGoingTripId = data[index]['id'].toString();
+                          print(data[index]);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -255,7 +230,7 @@ class _RequestedTripsCellsState extends State<RequestedTripsCells> {
                                 Center(
                                   child: RaisedButton(
                                     onPressed: () {
-                                      ResponseData.onGoingTripId = (data[index]['id']);
+                                      ResponseData.onGoingTripId = data[index]['id'].toString();
                                       print(data[index]['id']);
                                       Navigator.push(
                                           context,

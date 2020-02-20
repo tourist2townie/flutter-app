@@ -1,7 +1,9 @@
+// import 'package:easy_web_view/easy_web_view.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:tt/utils/ResponseData.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 String apiUrl = "http://10.0.2.2:8000/api/guideRating/${ResponseData.onGoingTripId}";
 
@@ -11,6 +13,10 @@ class Transaction extends StatefulWidget {
 }
 
 class _TransactionState extends State<Transaction> {
+
+  _launchURL() async {
+    launch("https://sandbox.payhere.lk/pay/of5817742");
+}
   var feedbackText = "Could be better";
   var sliderValue = 0.0;
 
@@ -49,7 +55,7 @@ class _TransactionState extends State<Transaction> {
         label: Text("Pay here"),
         icon: Icon(Icons.payment),
         onPressed: () {
-          print('Payment');
+          _launchURL();
         },
       ),
       body: Container(

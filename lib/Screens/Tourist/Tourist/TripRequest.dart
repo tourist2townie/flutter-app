@@ -9,9 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:tt/utils/ResponseData.dart';
 
 String uId = ResponseData.userId;
-String guideId = ResponseData.guideId.toString();
-String apiurl =
-    'http://10.0.2.2:8000/api/makeTour?guide_id=$guideId&tourist_id=$uId';
+String guideId = ResponseData.searchedGuide.toString();
 
 class TripRequest extends StatefulWidget {
   @override
@@ -21,7 +19,8 @@ class TripRequest extends StatefulWidget {
 }
 
 class TripRequestState extends State<TripRequest> {
-  final _formKey = GlobalKey<FormState>();
+  String apiurl =
+      'http://10.0.2.2:8000/api/makeTour?guide_id=$guideId&tourist_id=$uId';
   TextEditingController _type = TextEditingController();
   TextEditingController _date = TextEditingController();
   TextEditingController _place = TextEditingController();
@@ -36,6 +35,8 @@ class TripRequestState extends State<TripRequest> {
     'Adventure',
     'Historical',
   ];
+
+   
 
   TripRequestState() {
     formData = {
@@ -63,9 +64,12 @@ class TripRequestState extends State<TripRequest> {
 
         print(response.statusCode);
 
-        Toast.show("Request sent", context, duration: Toast.LENGTH_LONG);
         Navigator.pop(context);
       });
+    } else {
+      print(response.body);
+      Toast.show("Something went wrong! Try again ", context,
+          duration: Toast.LENGTH_LONG);
     }
   }
 
@@ -94,10 +98,7 @@ class TripRequestState extends State<TripRequest> {
               style:
                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
-            onPressed: () {
-              // Navigator.push(context,
-              // MaterialPageRoute(builder: (context) => RequestedTrips()));
-            },
+            onPressed: () {},
           ),
         ],
       ),
@@ -130,7 +131,12 @@ class TripRequestState extends State<TripRequest> {
                     LabelTextField(
                       hintText: 'Trip place',
                       labelText: 'Enter place you want to travel',
-                      validator: null,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'This field can be empty';
+                        }
+                        return null;
+                      },
                       textEditingController: _place,
                     ),
                     SizedBox(
@@ -143,8 +149,8 @@ class TripRequestState extends State<TripRequest> {
                               onPressed: () {
                                 showDatePicker(
                                   context: context,
+                                  firstDate: DateTime.now(),
                                   initialDate: DateTime.now(),
-                                  firstDate: DateTime(2000),
                                   lastDate: DateTime(2100),
                                 ).then((date) {
                                   setState(() {
@@ -157,7 +163,12 @@ class TripRequestState extends State<TripRequest> {
                               hintText: 'Date',
                               labelText: "Journey Date",
                               keyboardType: TextInputType.datetime,
-                              validator: null,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'This field cant be empty';
+                                }
+                                return null;
+                              },
                               textEditingController: _date,
                             ),
                           )
@@ -165,7 +176,12 @@ class TripRequestState extends State<TripRequest> {
                             hintText: 'Date',
                             labelText: _jorneyDate.toString(),
                             keyboardType: TextInputType.datetime,
-                            validator: null,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'This field cant be empty';
+                              }
+                              return null;
+                            },
                             textEditingController: _date,
                           ),
                     SizedBox(
@@ -175,7 +191,12 @@ class TripRequestState extends State<TripRequest> {
                       hintText: 'No of days',
                       labelText: 'No of days',
                       keyboardType: TextInputType.number,
-                      validator: null,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'This field cant be empty';
+                        }
+                        return null;
+                      },
                       textEditingController: _noOfDays,
                     ),
                     SizedBox(
@@ -184,7 +205,9 @@ class TripRequestState extends State<TripRequest> {
                     Center(
                       child: RaisedButton(
                         onPressed: () {
+                          if(_type.text.isEmpty ==true|| _place.text.isEmpty==true||_date.text.isEmpty==true||_noOfDays.text.isEmpty==true){
                           _makeTripRequest(context);
+                          }
                         },
                         child: Text(
                           "Sumbit request",

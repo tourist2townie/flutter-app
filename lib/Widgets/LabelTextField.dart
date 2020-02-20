@@ -26,6 +26,7 @@ class LabelTextField extends StatelessWidget {
     this.icon,
     this.onTap,
     this.iconButton,
+    
   });
 
   @override
@@ -40,6 +41,8 @@ class LabelTextField extends StatelessWidget {
           fillColor: Colors.black12,
           border: InputBorder.none,
           icon: icon,
+          // alignLabelWithHint: true,
+          hoverColor: Colors.indigo
           
         ),
         controller: textEditingController,

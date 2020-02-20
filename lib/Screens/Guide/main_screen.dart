@@ -1,9 +1,9 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:fancy_bottom_bar/fancy_bottom_bar.dart';
 import 'package:fancy_bottom_bar/fancy_bottom_item.dart';
 import 'package:flutter/material.dart';
-import 'package:tt/Screens/Guide/ConfirmRequest.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tt/Screens/Guide/PackageScreen.dart';
+import 'package:tt/Screens/Guide/PendingRequest.dart';
 
 import 'OngoingTrip.dart';
 
@@ -21,20 +21,20 @@ class _GuideMainScreenState extends State<GuideMainScreen> {
   final tabItems = [
     FancyBottomItem(
         title: Text(
-          "Ongoing Trips",
+          "Confirmed Request",
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
         ),
         icon: Icon(
-          Icons.home,
+        MdiIcons.ticketConfirmation,
           color: Colors.red,
         )),
     FancyBottomItem(
         title: Text(
-          "Requested Trips",
+          "Pending Requests",
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
         ),
         icon: Icon(
-          EvaIcons.shield,
+          MdiIcons.accountChild,
           color: Colors.red,
         )),
     FancyBottomItem(
@@ -43,7 +43,7 @@ class _GuideMainScreenState extends State<GuideMainScreen> {
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
         ),
         icon: Icon(
-          EvaIcons.compass,
+          MdiIcons.bagCarryOn,
           color: Colors.red,
         )),
   ];
@@ -72,7 +72,7 @@ class _GuideMainScreenState extends State<GuideMainScreen> {
                   : selectedPos == 1
                       ? Expanded(
                           flex: 1,
-                          child: ConfirmRequest(),
+                          child: PendingRequest(),
                         )
                       : Expanded(
                           flex: 1,

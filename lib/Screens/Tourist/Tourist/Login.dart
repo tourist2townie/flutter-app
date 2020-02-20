@@ -1,53 +1,23 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart' as prefix0;
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:toast/toast.dart';
-import 'package:tt/Chatroom/Chatroom.dart';
-import 'package:tt/Screens/Admin/AdminMain.dart';
-import 'package:tt/Screens/Guide/ConfirmRequest.dart';
-import 'package:tt/Screens/Guide/GuideFirst.dart';
-import 'package:tt/Screens/Guide/GuidePaymentHistory.dart';
-import 'package:tt/Screens/Guide/GuideProfile.dart';
-import 'package:tt/Screens/Guide/GuideTimeline.dart';
 import 'package:tt/Screens/Guide/main_screen.dart';
-import 'package:tt/Screens/Tourist/Tourist/Payments.dart';
 import 'package:tt/Screens/Tourist/Tourist/RegistrationPage.dart';
-import 'package:tt/Screens/Tourist/Tourist/Timeline.dart';
-import 'package:tt/Screens/Tourist/Tourist/TouristProfile.dart';
 import 'package:tt/main_screen.dart';
 import 'package:tt/utils/ResponseData.dart';
-import 'package:tt/utils/uidata.dart';
-
-import 'First.dart';
-import 'JoinTrip.dart';
-import 'Notifications.dart';
+import 'package:tt/Screens/Admin/MainScreen.dart';
 
 String username;
 String type;
 String apiUrl = "http://10.0.2.2:8000/api";
-var id;
+var id, value;
 String userId;
 
 class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      routes: <String, WidgetBuilder>{
-        UIData.TouristProfile: (BuildContext context) => TouristProfile(),
-        UIData.JoinTrip: (BuildContext context) => JoinTrip(),
-        UIData.TouristPhotos: (BuildContext context) => CarouselDemo(),
-        UIData.Timeline: (BuildContext context) => Timeline(),
-        UIData.Payment: (BuildContext context) => Payments(),
-        UIData.ChatRoom: (BuildContext context) => Chatroom(),
-        UIData.GuideProfile: (BuildContext context) => GuideProfile(),
-        UIData.ConfirmRequest: (BuildContext context) => ConfirmRequest(),
-        UIData.ChatRoom: (BuildContext context) => Chatroom(),
-        UIData.GuideTimeline: (BuildContext context) => GuideTimeline(),
-        UIData.GuidePhotos: (BuildContext context) => CarouselDemo(),
-        UIData.GuidePaymentHistory: (BuildContext context) =>
-            GuidePaymentHistory(),
-      },
       title: 'Tourist 2 Townie',
       home: LoginPage(),
     );
@@ -66,27 +36,32 @@ class _LoginPageState extends State<LoginPage> {
   Map user;
 
   void loginFunc(BuildContext context) async {
-    // print(_email + ':' + _password);
     final Map<String, dynamic> data = {
-      "email": _email.text,
+      "email": _email.text.toLowerCase(),
       "password": _password.text,
     };
 
     if (_email.text == "admin" && _password.text == "admin") {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => AdminMain()));
+          context, MaterialPageRoute(builder: (context) => MainScreenAdmin()));
     } else {
       var response = await http.post(apiUrl + '/login',
           body: data, encoding: Encoding.getByName("application/json"));
 
       print(response.statusCode);
-      var value = json.decode(response.body);
-      var type = (value["user"]["userType"]).toString();
-      id = (value["user"]["id"]).toString();
-      id==null?Toast.show("Invalid login", context):
-      ResponseData.userId = (value['user']['id']).toString();
 
-      if (response.statusCode == 200) {
+      if (response.statusCode != 200) {
+        print("cant rout");
+
+        Fluttertoast.showToast(msg: "Check credentials login failed");
+      } else {
+        value = json.decode(response.body);
+        var type = (value["user"]["userType"]).toString();
+        id = (value["user"]["id"]).toString();
+        print(id);
+        id == null
+            ? Fluttertoast.showToast(msg: "Invalid login")
+            : ResponseData.userId = (value['user']['id']).toString();
         if (type == "guide") {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => GuideMainScreen()));
@@ -95,9 +70,8 @@ class _LoginPageState extends State<LoginPage> {
               context, MaterialPageRoute(builder: (context) => MainScreen()));
         }
 
-        Toast.show("Login Successfull", context,duration:Toast.LENGTH_LONG);
-      } else {
-        print("cant rout");
+        // Toast.show("Login Successfull", context, duration: Toast.LENGTH_LONG);
+        Fluttertoast.showToast(msg: "Login Successfull");
       }
     }
   }
@@ -110,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("assets/images/login_new.jpg"),
+                  image: AssetImage("assets/images/login.png"),
                   fit: BoxFit.cover)),
           child: Column(
             children: <Widget>[
@@ -123,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 height: MediaQuery.of(context).size.height / 2,
                 width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.only(top: 93.0),
+                padding: EdgeInsets.only(top: 120.0),
                 child: Column(
                   children: <Widget>[
                     Padding(padding: EdgeInsets.only(top: 60.0)),
@@ -132,20 +106,20 @@ class _LoginPageState extends State<LoginPage> {
                       padding: EdgeInsets.only(
                           top: 4.0, left: 16.0, right: 16.0, bottom: 4.0),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5.0,
-                            )
-                          ]),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          color: Colors.white.withOpacity(0.7)),
                       child: TextFormField(
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter email';
+                          }
+                          return null;
+                        },
                         controller: _email,
                         decoration: InputDecoration(
                             icon: Icon(
                               Icons.email,
-                              color: Colors.black,
+                              color: Colors.indigo,
                             ),
                             hintText: 'Email'),
                       ),
@@ -157,21 +131,22 @@ class _LoginPageState extends State<LoginPage> {
                       padding: EdgeInsets.only(
                           top: 4.0, left: 16.0, right: 16.0, bottom: 4.0),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5.0,
-                            )
-                          ]),
-                      child: TextField(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        color: Colors.white.withOpacity(0.7),
+                      ),
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter email';
+                          }
+                          return null;
+                        },
                         controller: _password,
                         obscureText: true,
                         decoration: InputDecoration(
                             icon: Icon(
                               Icons.vpn_key,
-                              color: Colors.black,
+                              color: Colors.indigo,
                             ),
                             hintText: 'Password'),
                       ),
@@ -187,26 +162,40 @@ class _LoginPageState extends State<LoginPage> {
               ),
               RaisedButton(
                 child: Text("Login"),
-                color: Colors.teal.withOpacity(0.9),
+                color: Colors.amber.withOpacity(0.9),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0)),
+                    borderRadius: BorderRadius.circular(5.0)),
                 onPressed: () {
-                  loginFunc(context);
+                  if (_password.text.isEmpty == true &&
+                      _email.text.isEmpty == true) {
+                    Fluttertoast.showToast(msg: "Cant keep fields empty");
+                  } else {
+                    loginFunc(context);
+                  }
                 },
               ),
-              Text(
-                "Dont have account? Register here",
-                style: TextStyle(fontSize: 15.0, color: Colors.white),
-              ),
-              RaisedButton(
-                child: Text("Register"),
-                color: Colors.teal.withOpacity(0.9),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0)),
-                onPressed: () {
-                  _navRegistrationPage();
-                },
-              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "Dont have account?",
+                    style: TextStyle(fontSize: 15.0, color: Colors.white),
+                  ),
+                  FlatButton(
+                    child: Text(
+                      "Register here  ",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    color: Colors.transparent,
+                    onPressed: () {
+                      _navRegistrationPage();
+                      // Navigator.push(context,MaterialPageRoute(builder: (context)=>Chatroom()));
+                    },
+                  ),
+                ],
+              )
             ],
           ),
         ),
